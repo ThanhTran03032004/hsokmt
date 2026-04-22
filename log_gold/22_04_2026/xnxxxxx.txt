@@ -1,0 +1,199 @@
+[12:00:03 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 1]
+[12:00:17 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 2]
+[12:00:39 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 3]
+[12:00:46 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 4]
+[12:00:53 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 5]
+[12:01:29 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 6]
+[12:01:42 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 7]
+[12:01:50 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 8]
+[12:01:58 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 9]
+[12:02:25 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:02:33 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:03:22 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:03:40 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:04:21 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:04:42 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:04:49 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:04:56 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:05:03 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:05:12 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:05:27 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:05:34 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:05:42 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:05:54 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:06:04 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:06:30 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:07:08 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:07:18 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:07:25 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:07:33 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:07:40 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:07:50 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:08:14 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:08:22 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:09:05 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:09:14 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:09:22 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:09:29 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:09:39 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:09:47 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:11:00 SA]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 1]
+[12:11:30 SA]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 2]
+[12:11:47 SA]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 3]
+[12:11:56 SA]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 4]
+[12:12:04 SA]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 5]
+[12:12:11 SA]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 6]
+[12:12:18 SA]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 7]
+[12:12:25 SA]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 8]
+[12:12:32 SA]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 9]
+[12:12:55 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 1]
+[12:13:02 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 2]
+[12:13:11 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 3]
+[12:13:19 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 4]
+[12:13:28 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 5]
+[12:13:35 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 6]
+[12:13:55 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 7]
+[12:14:04 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 8]
+[12:14:11 SA]  Nâng cấp trang bị tinh tú Dây chuyền tinh tú [Cấp 9]
+[12:14:30 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 1]
+[12:14:40 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 2]
+[12:14:48 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 3]
+[12:14:55 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 4]
+[12:15:02 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 5]
+[12:15:16 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 6]
+[12:15:23 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 7]
+[12:15:33 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 8]
+[12:15:40 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 9]
+[12:16:00 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 1]
+[12:16:13 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 2]
+[12:16:25 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 3]
+[12:16:32 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 4]
+[12:16:40 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 5]
+[12:16:48 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 6]
+[12:16:55 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 7]
+[12:17:02 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 8]
+[12:17:09 SA]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 9]
+[12:17:36 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:17:44 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:17:52 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:18:00 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:18:07 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:18:15 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:18:23 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:18:30 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:18:38 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:18:45 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:18:53 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:19:04 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:19:11 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:19:22 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:19:29 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:19:55 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:20:11 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:20:18 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:20:32 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:20:43 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:20:50 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:20:57 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:21:04 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:21:11 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:21:19 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:21:26 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:21:34 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:21:41 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:21:48 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:21:56 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:22:09 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:22:16 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:22:29 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:22:38 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:22:45 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:22:52 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:23:00 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:23:10 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:23:19 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:23:28 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:23:41 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:23:50 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:23:57 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:24:11 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:24:19 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:24:34 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:24:41 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:24:49 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:24:58 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:25:05 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:25:14 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:25:23 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:25:30 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:25:38 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:25:47 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:25:55 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:26:08 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:26:21 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:26:29 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:26:41 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:27:00 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:27:07 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:27:22 SA]  Trừ -5000 vàng nâng cấp trang bị
+[12:27:30 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:27:38 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:27:44 SA]  Trừ -6000 vàng nâng cấp trang bị
+[12:27:53 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:28:01 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:28:08 SA]  Trừ -8000 vàng nâng cấp trang bị
+[12:28:16 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:28:23 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:28:35 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:28:43 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:28:50 SA]  Trừ -10000 vàng nâng cấp trang bị
+[12:28:57 SA]  Trừ -10000 vàng nâng cấp trang bị
+[03:27:20 SA]  Nhận 428 vàng từ rương vàng
+[03:27:25 SA]  Nhận 433 vàng từ rương vàng
+[03:27:26 SA]  Nhận 440 vàng từ rương vàng
+[03:27:28 SA]  Nhận 465 vàng từ rương vàng
+[03:27:30 SA]  Nhận 305 vàng từ rương vàng
+[03:27:34 SA]  Nhận 431 vàng từ rương vàng
+[03:27:35 SA]  Nhận 461 vàng từ rương vàng
+[03:27:37 SA]  Nhận 342 vàng từ rương vàng
+[03:27:38 SA]  Nhận 409 vàng từ rương vàng
+[03:27:39 SA]  Nhận 314 vàng từ rương vàng
+[03:28:26 SA]  Trừ -320000 vàng từ việc mua item shop potion
+[03:34:50 SA]  Nhận 0 vàng từ nhập giftcode sachbaodoc1
+[03:36:17 SA]  Trừ -2000000 vàng đục lỗ
+[03:36:31 SA]  Trừ -20000000 vàng tinh luyện ngọc
+[03:36:45 SA]  Trừ -20000000 vàng khảm ngọc
+[03:37:18 SA]  Trừ -180000000 vàng tinh luyện ngọc
+[03:37:36 SA]  Trừ -2000000 vàng đục lỗ
+[03:37:50 SA]  Trừ -4000000 vàng đục lỗ
+[03:38:02 SA]  Trừ -6000000 vàng đục lỗ
+[03:39:20 SA]  Trừ -2000000 vàng đục lỗ
+[03:39:43 SA]  Trừ -4000000 vàng đục lỗ
+[03:39:55 SA]  Trừ -6000000 vàng đục lỗ
+[03:40:07 SA]  Trừ -2000000 vàng đục lỗ
+[03:40:20 SA]  Trừ -4000000 vàng đục lỗ
+[03:40:32 SA]  Trừ -6000000 vàng đục lỗ
+[03:40:50 SA]  Trừ -20000000 vàng khảm ngọc
+[03:41:03 SA]  Trừ -20000000 vàng khảm ngọc
+[03:41:15 SA]  Trừ -20000000 vàng khảm ngọc
+[03:41:30 SA]  Trừ -20000000 vàng khảm ngọc
+[03:41:43 SA]  Trừ -20000000 vàng khảm ngọc
+[03:42:26 SA]  Trừ -20000000 vàng khảm ngọc
+[03:42:52 SA]  Trừ -20000000 vàng khảm ngọc
+[03:43:04 SA]  Trừ -20000000 vàng khảm ngọc
+[03:43:19 SA]  Trừ -20000000 vàng khảm ngọc
+[02:40:11 CH]  Trừ -5000 vàng nâng cấp trang bị
+[02:40:29 CH]  Trừ -5000 vàng nâng cấp trang bị
+[02:40:42 CH]  Trừ -5000 vàng nâng cấp trang bị
+[02:40:53 CH]  Trừ -6000 vàng nâng cấp trang bị
+[02:41:31 CH]  Trừ -6000 vàng nâng cấp trang bị
+[02:41:38 CH]  Trừ -6000 vàng nâng cấp trang bị
+[02:41:47 CH]  Trừ -8000 vàng nâng cấp trang bị
+[02:41:55 CH]  Trừ -8000 vàng nâng cấp trang bị
+[02:42:02 CH]  Trừ -8000 vàng nâng cấp trang bị
+[02:42:47 CH]  Trừ -10000 vàng nâng cấp trang bị
+[02:42:54 CH]  Trừ -10000 vàng nâng cấp trang bị
+[02:43:02 CH]  Trừ -10000 vàng nâng cấp trang bị
+[02:43:11 CH]  Trừ -10000 vàng nâng cấp trang bị
+[02:43:18 CH]  Trừ -10000 vàng nâng cấp trang bị
+[02:43:26 CH]  Trừ -10000 vàng nâng cấp trang bị

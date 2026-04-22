@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Trang quản trị</title>
+    <!-- Styling -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://portal.vietnix.vn/templates/vietnixv3/css/all.min.css?v=b1bc47" rel="stylesheet">
+    <link href="https://portal.vietnix.vn/templates/vietnixv3/css/theme.min.css?v=b1bc47" rel="stylesheet">
+    <link href="https://portal.vietnix.vn/templates/vietnixv3/css/fontawesome.min.css" rel="stylesheet">
+
+    <link href="https://portal.vietnix.vn/templates/vietnixv3/css/app.css?v=b1bc47" rel="stylesheet" type="text/css"
+          media="all"/>
+    <script src="https://portal.vietnix.vn/templates/vietnixv3/js/vue.min.js?v=b1bc47"></script>
+
+    <script src="https://portal.vietnix.vn/templates/vietnixv3/js/scripts.min.js?v=b1bc47"></script>
+    <script src="https://kit.fontawesome.com/85925e3268.js" crossorigin="anonymous"></script>
+
+    <link href='https://portal.vietnix.vn/assets/ssl_resources/css/style.css' rel='stylesheet' type='text/css'/>
+    <script type="text/javascript"
+            src="https://portal.vietnix.vn/modules/servers/EasyDCIM/Templates/clientarea/default/assets/js/productRepair.js"></script>
+    <!-- Facebook bugfix -->
+    <script type="text/javascript">
+        if (window.location.hash && window.location.hash == '#_=_') {
+            window.location.hash = '';
+        }
+    </script>
+</head>
+<body class="v-flex v-flex-col v-min-h-screen page-clientareaproductdetails">
+<div>
+    <div id="vnx_custom_header" class="md:v-h-[112px] v-h-[94px]"></div>
+    <header id="header" class="header v-fixed v-top-0 v-left-0 v-right-0 v-z-50 md:v-shadow-none">
+
+        <div class="vnx-topbar md:v-px-5 v-flex v-items-center v-justify-between">
+            <div class="v-flex v-gap-5">
+                <a href="https://www.facebook.com/VietnixHosting/" class="social-item md:v-block" target="_blank">
+                    <i class="fa-brands fa-facebook-f"></i>
+                    <span>Facebook</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="v-border-0 v-border-b v-border-solid v-border-[#e0e0e0]">
+            <div class="md:v-h-[70px] v-h-[56px] v-px-0 v-py-[5px] v-flex v-items-center v-justify-between v-text-[#525666]">
+                <div class="md:v-pl-7 v-pl-6 v-py-[10px] v-flex">
+                    <a href="/clientarea.php">
+                        <img class="md:v-h-[42px] v-h-8"
+                             src="https://portal.vietnix.vn/templates/vietnixv3/img/header/logo.svg" alt="Vietnix">
+                    </a>
+                </div>
+
+                <div class="md:v-pr-5 v-flex v-items-center v-gap-8 v-pr-6">
+                    <div class="lg:v-block v-hidden">
+                        <div class="account-dropdown v-flex v-gap-[10px] v-cursor-pointer">
+									<span class="v-w-[42px] v-h-[42px] v-center v-rounded-full v-bg-gradientPrimary v-text-white v-text-[17px]"><p>K</p></span>
+                            <div class="account-info v-flex v-flex-col">
+                                <div class="account-name v-flex-1">
+                                    <span class="v-text-[14px] v-font-bold">Khổng Minh Tiến </span>
+                                    <i class="fa-light fa-angle-down v-pl-1 icon"></i>
+                                </div>
+                            </div>
+
+                            <div class="wrapper-account v-absolute v-rounded-lg v-w-[250px] v-right-1 v-top-[42px] v-p-5 v-shadow-card3 v-bg-white v-z-10">
+                                <a href="/index.php?rp=/account/users">
+                                    <div class="account-item">
+                                        <i class="fa-light fa-users v-text-[18px] v-w-[22px] v-center"></i>
+                                        <span>Quản lý người dùng</span>
+                                    </div>
+                                </a>
+                                <a href="/logout.php">
+                                    <div class="account-item">
+                                        <i class="fa-light fa-power-off v-text-[18px] v-w-[22px] v-center"></i>
+                                        <span>Đăng xuất</span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="show-modal" class="v-fixed v-top-0 v-right-0 v-left-0 v-bottom-0 v-hidden lg:v-hidden">
+                <div class="v-relative v-center v-h-full v-w-full">
+                    <div class="v-absolute v-h-full v-w-full v-bg-black v-opacity-25" @click="showModal(false)"></div>
+                    <div class="wrapper-modal md:v-w-1/2 v-w-[327px] v-relative v-center v-flex-col v-px-5 v-pb-6 v-pt-12 v-shadow-card v-rounded-lg v-bg-white v-z-10">
+                        <div class="v-w-full v-px-2 v-mb-[10px] v-flex v-flex-row v-gap-[10px]">
+									<span class="v-w-[42px] v-h-[42px] v-p-[10px] v-center v-rounded-full v-bg-primary v-text-white v-text-[17px]"><p>K</p></span>
+                            <div class="account-info v-flex v-flex-col">
+                                <span class="v-text-[14px] v-font-bold">Khổng Minh Tiến </span>
+                                <span class="account-mail v-font-light v-text-[12px]">tienkmt21@gmail.com</span>
+                            </div>
+                        </div>
+
+                        <div class="v-w-full v-flex v-flex-col v-gap-2">
+                            <a href="/index.php?rp=/account/users">
+                                <div class="account-item v-bg-[#f8f8f8]">
+                                    <i class="fa-light fa-users v-text-[18px] v-w-[22px] v-center"></i>
+                                    <span>Quản lý người dùng</span>
+                                </div>
+                            </a>
+                            <a href="/logout.php">
+                                <div class="account-item v-bg-[#f8f8f8]">
+                                    <i class="fa-light fa-power-off v-text-[18px] v-w-[22px] v-center"></i>
+                                    <span>Đăng xuất</span>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:v-hidden">
+                <div id="second-sidebar" class="v-fixed v-top-0 v-right-0 v-left-0 v-bottom-0 v-hidden">
+                    <div class="v-relative v-center v-h-full v-w-full">
+                        <div class="v-absolute v-h-full v-w-full v-bg-black v-opacity-25"
+                             @click="showSecondSidebar(false)"></div>
+                        <div class="animate-second-sidebar v-w-[304px] v-h-full v-overflow-y-auto v-absolute v-top-0 v-right-0 v-flex v-flex-col v-gap-6 v-px-6 v-py-8 v-shadow-card v-rounded-l-lg v-bg-white v-z-10">
+                            <span class="v-w-full v-border-0 v-border-b v-border-solid v-border-[#e0e0e0]"></span>
+
+                            <div class="v-w-full v-flex v-gap-8 v-flex-col v-px-5" id="nav-second-sidebar">
+
+                                <a href="/clientarea.php" class="sidebar-item ">
+                                    <i class="fa-light fa-house-blank v-w-[22px] v-center"></i>
+                                    <p>Trang chủ</p>
+                                </a>
+
+                                <div class="sidebar-group">
+
+                                    <div class="sidebar-group-title">
+                                        <p>Dịch vụ</p>
+                                    </div>
+
+                                    <a href="/clientarea.php?action=services" class="sidebar-item active">
+                                        <i class="fa-light fa-box v-w-[22px] v-center"></i>
+                                        <p>Dịch vụ của tôi</p>
+                                    </a>
+
+                                </div>
+                                <div class="sidebar-group">
+                                    <div class="sidebar-group-title">
+                                        <p>Tài khoản</p>
+                                    </div>
+
+                                    <a href="/clientarea.php?action=details"
+                                       class="sidebar-item ">
+                                        <i class="fa-light fa-user v-w-[22px] v-center"></i>
+                                        <p>Thông tin tài khoản</p>
+                                    </a>
+                                </div>
+                                <div class="sidebar-group">
+                                    <div class="sidebar-group-title">
+                                        <p>Hỗ trợ</p>
+                                    </div>
+
+                                    <a href="/supporttickets.php"
+                                       class="sidebar-item ">
+                                        <i class="fa-light fa-ticket v-w-[22px] v-center"></i>
+                                        <p>Yêu cầu hỗ trợ</p>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+</div>
+
+
+<section id="main-body" class="clientareaproductdetails v-flex-1 v-min-h-max v-w-full vnx_bg_white_body">
+    <div class="  v-h-full">
+        <div class="v-h-full v-flex v-flex-row">
+            <div id="sidebar-menu">
+                <div id="main-sidebar" class="v-fixed v-bottom-0 v-top-[112px] lg:v-block sidebar"
+                     :class="showSidebar === true ? 'v-bg-white' : 'hover:v-min-w-[300px]'">
+                    <div class="v-h-full v-min-h-[910px] v-flex v-flex-col v-py-6 v-px-5 v-border-r v-border-t-0 v-border-b-0 v-border-l-0 v-border-solid v-border-gray-1"
+                         :class="{ 'v-bg-white v-w-[108px]': showSidebar === false }" @mouseleave="removeSidebarWidth()"
+                         @mouseenter="addSidebarWidth()">
+                        <a href="/clientarea.php" class="sidebar-item "
+                           :class="{ 'hidden-title': showSidebar === false }">
+                            <i class="fa-light fa-house-blank v-w-[22px] v-center"></i>
+                            <p>Trang chủ</p>
+                            <span class="tooltip-text" v-if="!showSidebar">Trang chủ</span>
+                        </a>
+                        <div class="sidebar-group">
+                            <div class="sidebar-group-title" :class="showSidebar ? '' : 'v-center'">
+                                <p v-if="showSidebar">
+                                    Dịch vụ
+                                </p>
+                                <p>...</p>
+                            </div>
+
+                            <a href="/clientarea.php?action=services" class="sidebar-item active"
+                               :class="{ 'hidden-title': showSidebar === false }">
+                                <i class="fa-light fa-box v-w-[22px] v-center"></i>
+                                <p>
+                                    Dịch vụ của tôi
+                                </p>
+                                <span class="tooltip-text"
+                                      :class="{ 'v-hidden': showSidebar === true }">Dịch vụ của tôi</span>
+                            </a>
+                        </div>
+                        <div class="sidebar-group">
+                            <div class="sidebar-group-title" :class="showSidebar ? '' : 'v-center'">
+                                <p v-if="showSidebar">Tài khoản</p>
+                                <p v-else>...</p>
+                            </div>
+
+                            <a href="/clientarea.php?action=details"
+                               class="sidebar-item "
+                               :class="{ 'hidden-title': showSidebar === false }">
+                                <i class="fa-light fa-user v-w-[22px] v-center"></i>
+                                <p>
+                                    Thông tin tài khoản
+                                </p>
+                                <span class="tooltip-text v-w-max" :class="{ 'v-hidden': showSidebar === true }">Cài đặt tài khoản</span>
+                            </a>
+                        </div>
+                        <div class="sidebar-group">
+                            <div class="sidebar-group-title" :class="showSidebar ? '' : 'v-center'">
+                                <p v-if="showSidebar">Hỗ trợ</p>
+                                <p v-else>...</p>
+                            </div>
+                            <a href="/supporttickets.php"
+                               class="sidebar-item "
+                               :class="{ 'hidden-title': showSidebar === false }">
+                                <i class="fa-light fa-ticket v-w-[22px] v-center"></i>
+                                <p>
+                                    Yêu cầu hỗ trợ
+                                </p>
+                                <span class="tooltip-text v-w-max" :class="{ 'v-hidden': showSidebar === true }">Yêu cầu hỗ trợ</span>
+                            </a>
+                        </div>
+                        <div class="sidebar-group">
+                            <div class="v-flex v-justify-center v-text-2xl">
+                              <span class="v-h-[50px] v-w-[50px] v-bg-[#E1EAF2] v-text-[22px] v-rounded-lg v-flex v-justify-center v-items-center v-cursor-pointer v-text-primary v-transition hover:v-text-white hover:v-bg-primary"
+                                    @click="toggleSidebar()">
+                                <i class="fa-light fa-angle-left icon"
+                                   :class="showSidebar ? 'rotate-left' : 'rotate-right'"></i>
+                              </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="lg:v-block v-transition-all v-duration-200"
+                     :class="showSidebar ? 'v-w-[270px]' : 'v-w-[108px]'"></div>
+            </div>
+
+            <div class="lg:v-container  v-mt-0  v-w-full v-m-auto vnx-custom-padding-body">
+                <div class="2xl:v-p-0 2xl:v-py-6 v-p-6 v-w-full">
+                    <div class="v-flex v-flex-col lg:v-gap-6 v-gap-5 v-w-full v-text-gray-6" id="product_detail">
+                        <div class="tab-content margin-bottom">
+                            <div class="tab-pane fade show active" role="tabpanel" id="tabOverview">
+
+                                <ul class="nav nav-tabs responsive-tabs-sm" id="tabList">
+                                    <li class="nav-item">
+                                        <a href="#domain" data-toggle="tab" class="nav-link active">Thông tin máy chủ</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="#configoptions" data-toggle="tab" class="nav-link">Tuỳ chọn cấu hình</a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content bg-white product-details-tab-container">
+                                    <div class="tab-pane fade show active text-center" role="tabpanel" id="domain">
+                                        <div class="service-info">
+                                            <span>Tên máy chủ:</span>
+                                            <span>sharingan.click-jtal</span>
+                                        </div>
+                                        <div class="service-info v-m-0 v-pb-5 v-vborder-b">
+                                            <span>IP:</span>
+                                            <span>14.225.210.217</span>
+                                        </div>
+                                        <div class="text-center module-client-area">
+                                            <div class="mg-wrapper body" data-target=".body" data-spy="scroll"
+                                                 data-twttr-rendered="true">
+                                                <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700"
+                                                      rel="stylesheet">
+                                                <link rel="stylesheet"
+                                                      href="https://portal.vietnix.vn/modules/servers/proxmoxVPS/templates/client/default/assets/css/layers-ui.css">
+                                                <link rel="stylesheet"
+                                                      href="https://portal.vietnix.vn/modules/servers/proxmoxVPS/templates/client/default/assets/css/mg_styles.css">
+
+                                                <div class="full-screen-module-container" id="layers">
+                                                    <div class="lu-app">
+                                                        <div id="mc_juw988kgeuwndhqn4b3l66vzthanclee"
+                                                             class="vue-app-main-container" mg-module="proxmoxVps">
+                                                            <div class="lu-row"><i v-show="pageLoading"
+                                                                                   class="page_processing"></i></div>
+                                                            <div class="h4 lu-m-b-3x lu-m-t-3x">Hành động</div>
+                                                            <div class="lu-tiles lu-row lu-row--eq-height">
+                                                                <div class="lu-col-sm-20p"
+                                                                     style="justify-content: center;">
+                                                                    <a class="lu-tile lu-tile--btn  "
+                                                                       href="/admin/startServer">
+                                                                        <div class="lu-i-c-6x">
+                                                                            <img src="https://portal.vietnix.vn/modules/servers/proxmoxVPS/app/UI/Client/Templates/assets/img/buttons/startButton.png"
+                                                                                 alt="Start"/>
+                                                                        </div>
+                                                                        <div class="lu-tile__title">Chạy</div>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="lu-col-sm-20p"
+                                                                     style="justify-content: center;">
+                                                                    <a class="lu-tile lu-tile--btn  "
+                                                                       href="javascript:;" data-toggle="lu-tooltip"
+                                                                       @click="loadModal($event, 'rebootButton', 'ModulesGarden_Servers_ProxmoxVps_App_UI_Home_Buttons_RebootButton', 'rebootButon', null, true)"
+                                                                       data-title="Reboot">
+                                                                        <div class="lu-i-c-6x">
+                                                                            <img src="https://portal.vietnix.vn/modules/servers/proxmoxVPS/app/UI/Client/Templates/assets/img/buttons/rebootButton.png"
+                                                                                 alt="Reboot"/>
+                                                                        </div>
+                                                                        <div class="lu-tile__title">Khởi động lại</div>
+                                                                    </a>
+                                                                </div>
+                                                                <div class="lu-col-sm-20p"
+                                                                     style="justify-content: center;">
+                                                                    <a class="lu-tile lu-tile--btn  "
+                                                                       href="/admin/stopServer">
+                                                                        <div class="lu-i-c-6x">
+                                                                            <img src="https://portal.vietnix.vn/modules/servers/proxmoxVPS/app/UI/Client/Templates/assets/img/buttons/shutdownButton.png"
+                                                                                 alt="Shut Down"/>
+                                                                        </div>
+                                                                        <div class="lu-tile__title">Tắt</div>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="vnx_space_empty" class="v-flex-1 lg:v-bg-light-hover"></div>
+<footer id="footer"
+        class="footer v-flex v-py-2.5 v-bg-white v-border v-border-l-0 v-border-b-0 v-border-r-0 v-border-solid v-border-gray-1 v-pl-0">
+    <div class="v-transition-all v-duration-200" :class="showSidebar ? 'lg:v-w-[270px]':'lg:v-w-[108px]'"></div>
+    <div class="container">
+        <p class=" text-center mb-0 v-text-gray-6 v-text-base v-font-light">Copyright &copy;</p>
+    </div>
+</footer>
+</body>
+</html>
+<script src="https://portal.vietnix.vn/templates/vietnixv3/js/app.js?v=b1bc47"></script>
+

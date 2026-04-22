@@ -1,0 +1,32 @@
+Listening for transport dt_socket at address: 5006
+config: port: 19129
+config: mysql-host: 127.0.0.1
+config: mysql-port: 3307
+config: mysql-user: root
+config: mysql-password: 
+config: mysql-database: xnxx
+config: debug: false
+config: indexRes: 80
+config: indexCharPar: -1667
+config: exp: 2
+config: lvmax: 139
+config: allow_ip_client: 1200
+config: time_client_disconnect: 10000
+config: event: 0
+config: server_admin: false
+config: time_RemoveSessions: 60000
+config: server_test: false
+mysql auto-start: booting local MySQL on 127.0.0.1:3307
+mysql auto-start: local MySQL is ready on 127.0.0.1:3307
+jdbc:mysql://127.0.0.1:3307/xnxx?autoReconnect=true&useUnicode=yes&characterEncoding=UTF-8
+OPEN DataBase connect
+item loaded!
+map loaded, mob size 15733
+part_fashion loaded!
+clan loaded!
+cache loaded!
+Started in 6640s
+
+LISTEN PORT 19129...
+accecpt ip 127.0.0.1 - online : 1
+admin login with 301 zoom 1

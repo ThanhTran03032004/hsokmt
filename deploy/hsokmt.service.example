@@ -1,0 +1,16 @@
+[Unit]
+Description=HSOKMT Server
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/hsokmt
+Environment="JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64"
+Environment="PATH=/usr/lib/jvm/java-21-openjdk-amd64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+ExecStart=/usr/bin/java -jar /opt/hsokmt/target/hsokmt-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+Restart=always
+RestartSec=5
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

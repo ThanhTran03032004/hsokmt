@@ -1,0 +1,301 @@
+[02:19:31 SA]  Trừ -321211565 vàng mua vật phẩm trong khu mua bán của BaoAn
+[02:19:36 SA]  Trừ -108994552 vàng mua vật phẩm trong khu mua bán của BaoAn
+[02:19:41 SA]  Trừ -138012943 vàng mua vật phẩm trong khu mua bán của DucHuy
+[02:19:49 SA]  Trừ -166280521 vàng mua vật phẩm trong khu mua bán của HaiDang
+[02:19:51 SA]  Trừ -248518898 vàng mua vật phẩm trong khu mua bán của HaiDang
+[02:19:53 SA]  Trừ -266639692 vàng mua vật phẩm trong khu mua bán của HaiDang
+[02:19:56 SA]  Trừ -67833628 vàng mua vật phẩm trong khu mua bán của HaiDang
+[02:20:30 SA]  Trừ -9999999 vàng chơi vòng xoay may mắn
+[02:33:55 SA]  Trừ -5000000 vàng chơi vòng xoay may mắn
+[02:34:54 SA]  Trừ -50000000 vàng chơi vòng xoay may mắn
+[02:59:11 SA]  Trừ -6666666 vàng chơi vòng xoay may mắn
+[02:59:31 SA]  Nhận 11833643 vàng từ vòng xoay may mắn
+[04:19:59 CH]  Trừ -9999999 vàng chơi vòng xoay may mắn
+[05:28:19 CH]  Tạo giáp siêu nhân
+[05:43:25 CH]  Tạo giáp siêu nhân
+[09:34:41 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 1]
+[09:34:55 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 2]
+[09:35:04 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 3]
+[09:35:14 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 4]
+[09:35:21 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 5]
+[09:35:28 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 6]
+[09:35:35 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 7]
+[09:35:44 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 8]
+[09:35:51 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 9]
+[09:36:14 CH]  Trừ -5000 vàng nâng cấp trang bị
+[09:36:22 CH]  Trừ -5000 vàng nâng cấp trang bị
+[09:36:32 CH]  Trừ -5000 vàng nâng cấp trang bị
+[09:36:39 CH]  Trừ -6000 vàng nâng cấp trang bị
+[09:36:55 CH]  Trừ -6000 vàng nâng cấp trang bị
+[09:37:04 CH]  Trừ -6000 vàng nâng cấp trang bị
+[09:37:11 CH]  Trừ -8000 vàng nâng cấp trang bị
+[09:37:18 CH]  Trừ -8000 vàng nâng cấp trang bị
+[09:37:25 CH]  Trừ -8000 vàng nâng cấp trang bị
+[09:37:33 CH]  Trừ -10000 vàng nâng cấp trang bị
+[09:37:42 CH]  Trừ -10000 vàng nâng cấp trang bị
+[09:37:49 CH]  Trừ -10000 vàng nâng cấp trang bị
+[09:38:00 CH]  Trừ -10000 vàng nâng cấp trang bị
+[09:38:12 CH]  Trừ -10000 vàng nâng cấp trang bị
+[09:38:43 CH]  Trừ -10000 vàng nâng cấp trang bị
+[09:44:31 CH]  Nâng cấp trang bị tinh tú Nón sát thủ tinh tú [Cấp 1]
+[09:44:49 CH]  Nâng cấp trang bị tinh tú Nón sát thủ tinh tú [Cấp 2]
+[09:44:56 CH]  Nâng cấp trang bị tinh tú Nón sát thủ tinh tú [Cấp 3]
+[09:45:05 CH]  Nâng cấp trang bị tinh tú Nón sát thủ tinh tú [Cấp 4]
+[09:45:12 CH]  Nâng cấp trang bị tinh tú Nón sát thủ tinh tú [Cấp 5]
+[09:45:19 CH]  Nâng cấp trang bị tinh tú Nón sát thủ tinh tú [Cấp 6]
+[09:45:25 CH]  Nâng cấp trang bị tinh tú Nón sát thủ tinh tú [Cấp 7]
+[09:45:33 CH]  Nâng cấp trang bị tinh tú Nón sát thủ tinh tú [Cấp 8]
+[09:45:40 CH]  Nâng cấp trang bị tinh tú Nón sát thủ tinh tú [Cấp 9]
+[09:46:14 CH]  Trừ -5000 vàng nâng cấp trang bị
+[09:46:22 CH]  Trừ -5000 vàng nâng cấp trang bị
+[09:46:31 CH]  Trừ -5000 vàng nâng cấp trang bị
+[09:46:40 CH]  Trừ -6000 vàng nâng cấp trang bị
+[09:46:47 CH]  Trừ -6000 vàng nâng cấp trang bị
+[09:46:58 CH]  Trừ -6000 vàng nâng cấp trang bị
+[09:47:16 CH]  Trừ -8000 vàng nâng cấp trang bị
+[09:47:25 CH]  Trừ -8000 vàng nâng cấp trang bị
+[09:47:34 CH]  Trừ -8000 vàng nâng cấp trang bị
+[09:47:49 CH]  Trừ -10000 vàng nâng cấp trang bị
+[09:47:57 CH]  Trừ -10000 vàng nâng cấp trang bị
+[09:48:47 CH]  Trừ -10000 vàng nâng cấp trang bị
+[09:49:06 CH]  Trừ -10000 vàng nâng cấp trang bị
+[09:49:16 CH]  Trừ -10000 vàng nâng cấp trang bị
+[09:49:24 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:02:01 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 1]
+[10:02:15 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 2]
+[10:02:22 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 3]
+[10:02:31 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 4]
+[10:02:42 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 5]
+[10:02:49 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 6]
+[10:03:01 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 7]
+[10:03:12 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 8]
+[10:03:21 CH]  Nâng cấp trang bị tinh tú Kiếm tinh tú[Vip 0] [Cấp 9]
+[10:03:48 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:03:55 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:04:04 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:04:11 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:04:20 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:04:29 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:04:36 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:04:52 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:05:01 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:05:15 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:05:25 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:05:32 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:05:40 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:05:47 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:05:55 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:16:57 CH]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 1]
+[10:17:04 CH]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 2]
+[10:17:11 CH]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 3]
+[10:17:26 CH]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 4]
+[10:17:35 CH]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 5]
+[10:17:45 CH]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 6]
+[10:17:56 CH]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 7]
+[10:18:04 CH]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 8]
+[10:18:11 CH]  Nâng cấp trang bị tinh tú Găng tay tinh tú [Cấp 9]
+[10:18:29 CH]  Nâng cấp trang bị tinh tú Quần sát thủ tinh tú [Cấp 1]
+[10:18:36 CH]  Nâng cấp trang bị tinh tú Quần sát thủ tinh tú [Cấp 2]
+[10:18:43 CH]  Nâng cấp trang bị tinh tú Quần sát thủ tinh tú [Cấp 3]
+[10:18:50 CH]  Nâng cấp trang bị tinh tú Quần sát thủ tinh tú [Cấp 4]
+[10:18:58 CH]  Nâng cấp trang bị tinh tú Quần sát thủ tinh tú [Cấp 5]
+[10:19:08 CH]  Nâng cấp trang bị tinh tú Quần sát thủ tinh tú [Cấp 6]
+[10:19:14 CH]  Nâng cấp trang bị tinh tú Quần sát thủ tinh tú [Cấp 7]
+[10:19:22 CH]  Nâng cấp trang bị tinh tú Quần sát thủ tinh tú [Cấp 8]
+[10:19:29 CH]  Nâng cấp trang bị tinh tú Quần sát thủ tinh tú [Cấp 9]
+[10:21:14 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 1]
+[10:21:24 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 2]
+[10:21:45 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 3]
+[10:21:52 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 4]
+[10:22:02 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 5]
+[10:22:10 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 6]
+[10:22:18 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 7]
+[10:22:29 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 8]
+[10:22:48 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 9]
+[10:23:01 CH]  Nâng cấp trang bị tinh tú Áo sát thủ tinh tú [Cấp 1]
+[10:23:16 CH]  Nâng cấp trang bị tinh tú Áo sát thủ tinh tú [Cấp 2]
+[10:23:23 CH]  Nâng cấp trang bị tinh tú Áo sát thủ tinh tú [Cấp 3]
+[10:23:31 CH]  Nâng cấp trang bị tinh tú Áo sát thủ tinh tú [Cấp 4]
+[10:23:38 CH]  Nâng cấp trang bị tinh tú Áo sát thủ tinh tú [Cấp 5]
+[10:23:45 CH]  Nâng cấp trang bị tinh tú Áo sát thủ tinh tú [Cấp 6]
+[10:23:53 CH]  Nâng cấp trang bị tinh tú Áo sát thủ tinh tú [Cấp 7]
+[10:24:01 CH]  Nâng cấp trang bị tinh tú Áo sát thủ tinh tú [Cấp 8]
+[10:24:08 CH]  Nâng cấp trang bị tinh tú Áo sát thủ tinh tú [Cấp 9]
+[10:24:32 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 1]
+[10:24:41 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 2]
+[10:24:48 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 3]
+[10:24:57 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 4]
+[10:25:09 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 5]
+[10:25:17 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 6]
+[10:25:24 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 7]
+[10:25:31 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 8]
+[10:25:42 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 9]
+[10:26:02 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 1]
+[10:26:58 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 2]
+[10:27:28 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 3]
+[10:27:38 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 4]
+[10:27:46 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 5]
+[10:27:52 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 6]
+[10:28:02 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 7]
+[10:28:11 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 8]
+[10:28:19 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 9]
+[10:28:34 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 1]
+[10:28:42 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 2]
+[10:28:57 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 3]
+[10:29:06 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 4]
+[10:29:13 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 5]
+[10:29:22 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 6]
+[10:29:33 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 7]
+[10:29:39 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 8]
+[10:29:55 CH]  Nâng cấp trang bị tinh tú Nhẫn tinh tú [Cấp 9]
+[10:31:17 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:31:25 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:31:34 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:31:41 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:31:49 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:31:56 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:32:04 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:32:12 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:32:19 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:32:30 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:32:39 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:33:00 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:33:06 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:33:13 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:33:22 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:33:38 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:33:45 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:33:53 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:34:00 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:34:11 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:34:19 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:34:38 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:34:46 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:34:53 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:35:00 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:35:08 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:35:23 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:35:31 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:35:39 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:35:49 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:36:15 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:36:31 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:36:38 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:36:55 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:37:02 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:37:10 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:37:17 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:37:34 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:37:41 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:37:50 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:38:08 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:38:19 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:38:26 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:38:35 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:38:42 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:38:57 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:39:05 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:39:12 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:39:39 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:39:49 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:40:56 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:41:04 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:41:18 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:42:19 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:42:31 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:42:57 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:43:48 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:43:56 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:44:10 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:44:18 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:45:01 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:45:27 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:45:34 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:45:41 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:45:48 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:45:55 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:46:04 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:46:11 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:46:53 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:47:08 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:47:36 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:47:48 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:47:56 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:48:03 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:48:16 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:50:07 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:50:22 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:50:29 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:50:41 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:51:06 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:51:14 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:51:21 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:51:28 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:51:46 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:51:54 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:52:25 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:52:40 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:52:47 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:52:54 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:53:01 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:54:49 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:55:02 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:55:12 CH]  Trừ -5000 vàng nâng cấp trang bị
+[10:55:25 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:55:36 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:55:44 CH]  Trừ -6000 vàng nâng cấp trang bị
+[10:56:50 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:57:16 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:57:33 CH]  Trừ -8000 vàng nâng cấp trang bị
+[10:57:46 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:58:12 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:58:39 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:59:04 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:59:15 CH]  Trừ -10000 vàng nâng cấp trang bị
+[10:59:22 CH]  Trừ -10000 vàng nâng cấp trang bị
+[11:00:26 CH]  Trừ -39996000 vàng từ việc mua item shop nguyên liệu
+[11:00:33 CH]  Nhận 1000000000 vàng từ lệnh admin
+[11:00:41 CH]  Nhận 1000000000 vàng từ lệnh admin
+[11:01:13 CH]  Trừ -19998000 vàng từ việc mua item shop nguyên liệu
+[11:01:17 CH]  Trừ -9999000 vàng từ việc mua item shop nguyên liệu
+[11:04:26 CH]  Trừ -3000000 vàng tạo cánh
+[11:04:42 CH]  Trừ -3000000 vàng tạo cánh
+[11:05:05 CH]  Trừ -50000 vàng nâng cấp cánh
+[11:05:31 CH]  Trừ -52000 vàng nâng cấp cánh
+[11:06:13 CH]  Trừ -55000 vàng nâng cấp cánh
+[11:06:40 CH]  Trừ -59000 vàng nâng cấp cánh
+[11:07:28 CH]  Trừ -64000 vàng nâng cấp cánh
+[11:07:47 CH]  Trừ -70000 vàng nâng cấp cánh
+[11:08:10 CH]  Trừ -77000 vàng nâng cấp cánh
+[11:08:29 CH]  Trừ -85000 vàng nâng cấp cánh
+[11:08:58 CH]  Trừ -94000 vàng nâng cấp cánh
+[11:09:20 CH]  Trừ -104000 vàng nâng cấp cánh
+[11:10:13 CH]  Trừ -115000 vàng nâng cấp cánh
+[11:10:37 CH]  Trừ -127000 vàng nâng cấp cánh
+[11:11:04 CH]  Trừ -140000 vàng nâng cấp cánh
+[11:11:23 CH]  Trừ -154000 vàng nâng cấp cánh
+[11:12:13 CH]  Trừ -169000 vàng nâng cấp cánh
+[11:12:36 CH]  Trừ -185000 vàng nâng cấp cánh
+[11:12:55 CH]  Trừ -202000 vàng nâng cấp cánh
+[11:13:12 CH]  Trừ -220000 vàng nâng cấp cánh
+[11:13:32 CH]  Trừ -239000 vàng nâng cấp cánh
+[11:13:48 CH]  Trừ -259000 vàng nâng cấp cánh
+[11:14:06 CH]  Trừ -280000 vàng nâng cấp cánh
+[11:14:23 CH]  Trừ -302000 vàng nâng cấp cánh
+[11:14:39 CH]  Trừ -325000 vàng nâng cấp cánh
+[11:14:57 CH]  Trừ -349000 vàng nâng cấp cánh
+[11:15:20 CH]  Trừ -374000 vàng nâng cấp cánh
+[11:15:42 CH]  Trừ -400000 vàng nâng cấp cánh
+[11:16:00 CH]  Trừ -427000 vàng nâng cấp cánh
+[11:16:16 CH]  Trừ -455000 vàng nâng cấp cánh
+[11:17:13 CH]  Trừ -484000 vàng nâng cấp cánh
+[11:17:32 CH]  Trừ -514000 vàng nâng cấp cánh
+[11:57:50 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 1]
+[11:58:14 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 2]
+[11:58:21 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 3]
+[11:58:34 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 4]
+[11:58:54 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 5]
+[11:59:02 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 6]
+[11:59:30 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 7]
+[11:59:37 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 8]
+[11:59:47 CH]  Nâng cấp trang bị tinh tú Giày tinh tú [Cấp 9]

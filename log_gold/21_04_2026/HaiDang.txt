@@ -1,0 +1,17 @@
+[02:19:49 SA]  Nhận 157966496 vàng bán vật phẩm trong khu mua bán cho xnxxxxx
+[02:19:51 SA]  Nhận 236092958 vàng bán vật phẩm trong khu mua bán cho xnxxxxx
+[02:19:53 SA]  Nhận 253307712 vàng bán vật phẩm trong khu mua bán cho xnxxxxx
+[02:19:56 SA]  Nhận 64441948 vàng bán vật phẩm trong khu mua bán cho xnxxxxx
+[02:31:18 SA]  Trừ -2315811 vàng chơi vòng xoay may mắn
+[02:43:00 SA]  Trừ -3465388 vàng chơi vòng xoay may mắn
+[02:59:09 SA]  Trừ -100000 vàng chơi vòng xoay may mắn
+[03:00:42 SA]  Trừ -8252881 vàng chơi vòng xoay may mắn
+[03:25:47 SA]  Trừ -100000 vàng chơi vòng xoay may mắn
+[03:29:03 SA]  Trừ -4540143 vàng chơi vòng xoay may mắn
+[03:36:19 SA]  Trừ -2937716 vàng chơi vòng xoay may mắn
+[03:41:31 SA]  Trừ -4350213 vàng chơi vòng xoay may mắn
+[04:19:45 CH]  Trừ -8951182 vàng chơi vòng xoay may mắn
+[04:24:31 CH]  Trừ -6370796 vàng chơi vòng xoay may mắn
+[04:27:15 CH]  Trừ -6342303 vàng chơi vòng xoay may mắn
+[04:38:38 CH]  Trừ -6643122 vàng chơi vòng xoay may mắn
+[04:41:12 CH]  Trừ -2503085 vàng chơi vòng xoay may mắn
