@@ -33,5 +33,7 @@ $action = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfil
 $trigger = New-ScheduledTaskTrigger -AtStartup
 $principal = New-ScheduledTaskPrincipal -UserId 'SYSTEM' -LogonType ServiceAccount -RunLevel Highest
 Register-ScheduledTask -TaskName $TaskName -Action $action -Trigger $trigger -Principal $principal -Force | Out-Null
+New-NetFirewallRule -DisplayName 'HSOKMT Game Server' -Direction Inbound -Protocol TCP -LocalPort 19129 -Action Allow -ErrorAction SilentlyContinue | Out-Null
+New-NetFirewallRule -DisplayName 'HSOKMT Admin Panel' -Direction Inbound -Protocol TCP -LocalPort 19130 -Action Allow -ErrorAction SilentlyContinue | Out-Null
 Start-ScheduledTask -TaskName $TaskName
 Write-Host "Installed and started: $TaskName"

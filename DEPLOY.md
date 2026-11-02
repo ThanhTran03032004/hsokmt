@@ -11,6 +11,8 @@ Set-ExecutionPolicy Bypass -Scope Process -Force
 
 Script clone project vào `C:\HSOKMT`, build jar và tạo Scheduled Task `HSOKMT Server` tự chạy khi Windows khởi động.
 
+Panel quản trị truy cập tại `http://IP_VPS:19130/admin`. Token nằm trong `hso.conf` ở dòng `admin_tool_token`.
+
 Cấu hình database trong `hso.conf`:
 
 ```text

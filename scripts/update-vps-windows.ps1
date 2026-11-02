@@ -17,5 +17,7 @@ git -C $AppDir pull --ff-only origin $Branch
 Set-Location $AppDir
 & (Join-Path $AppDir 'mvnw.cmd') '-q' '-DskipTests' 'clean' 'package'
 if ($LASTEXITCODE -ne 0) { throw 'Maven build failed. The server was left stopped.' }
+New-NetFirewallRule -DisplayName 'HSOKMT Game Server' -Direction Inbound -Protocol TCP -LocalPort 19129 -Action Allow -ErrorAction SilentlyContinue | Out-Null
+New-NetFirewallRule -DisplayName 'HSOKMT Admin Panel' -Direction Inbound -Protocol TCP -LocalPort 19130 -Action Allow -ErrorAction SilentlyContinue | Out-Null
 Start-ScheduledTask -TaskName $TaskName
 Write-Host 'Updated and restarted HSOKMT.'
