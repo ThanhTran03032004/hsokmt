@@ -11,6 +11,12 @@ if (-not ([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdenti
 
 Stop-ScheduledTask -TaskName $TaskName -ErrorAction SilentlyContinue
 Start-Sleep -Seconds 2
+$serverProcesses = Get-CimInstance Win32_Process -Filter "Name = 'java.exe'" -ErrorAction SilentlyContinue |
+    Where-Object { $_.CommandLine -and $_.CommandLine.IndexOf($AppDir, [StringComparison]::OrdinalIgnoreCase) -ge 0 }
+foreach ($serverProcess in $serverProcesses) {
+    Stop-Process -Id $serverProcess.ProcessId -Force -ErrorAction SilentlyContinue
+}
+Start-Sleep -Seconds 2
 git -C $AppDir fetch origin $Branch
 git -C $AppDir checkout $Branch
 git -C $AppDir pull --ff-only origin $Branch
