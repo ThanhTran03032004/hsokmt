@@ -26,13 +26,21 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 public class AdminToolServer {
     private static AdminToolServer instance;
     private static final ObjectMapper JSON = new ObjectMapper();
     private final FakePlayerBotManager fakeBots = FakePlayerBotManager.gI();
+    private final ScheduledExecutorService adminScheduler = Executors.newSingleThreadScheduledExecutor();
     private HttpServer server;
     private boolean started;
+    private volatile long maintenanceStartsAt;
+    private volatile long maintenanceEndsAt;
+    private volatile ScheduledFuture<?> maintenanceStartTask;
+    private volatile ScheduledFuture<?> maintenanceEndTask;
 
     public static AdminToolServer gI() {
         if (instance == null) {
@@ -61,6 +69,13 @@ public class AdminToolServer {
             server.createContext("/api/castle/open", exchange -> handleApi(exchange, this::openCastle));
             server.createContext("/api/ban-player", exchange -> handleApi(exchange, this::banPlayer));
             server.createContext("/api/login-limit", exchange -> handleApi(exchange, this::setLoginLimit));
+            server.createContext("/api/server-action", exchange -> handleApi(exchange, this::serverAction));
+            server.createContext("/api/account/coin", exchange -> handleApi(exchange, this::adjustCoin));
+            server.createContext("/api/player/search", exchange -> handleApi(exchange, this::searchPlayer));
+            server.createContext("/api/item/search", exchange -> handleApi(exchange, this::searchItem));
+            server.createContext("/api/broadcast", exchange -> handleApi(exchange, this::broadcast));
+            server.createContext("/api/settings", exchange -> handleApi(exchange, this::settings));
+            server.createContext("/api/maintenance/schedule", exchange -> handleApi(exchange, this::scheduleMaintenance));
             server.setExecutor(Executors.newCachedThreadPool());
             server.start();
             started = true;
@@ -171,6 +186,11 @@ public class AdminToolServer {
         result.put("castleRegister", ChiemThanhManager.isRegister);
         result.put("castleAttackSeconds", Math.max(0L, (ChiemThanhManager.timeAttack - System.currentTimeMillis()) / 1000L));
         result.put("connectionsByIp", SessionManager.countConnectionsByIp());
+        result.put("expMultiplier", Manager.gI().exp);
+        result.put("maxLevel", Manager.gI().lvmax);
+        result.put("event", Manager.gI().event);
+        result.put("maintenanceStartsAt", maintenanceStartsAt);
+        result.put("maintenanceEndsAt", maintenanceEndsAt);
         return result;
     }
 
@@ -373,6 +393,253 @@ public class AdminToolServer {
         return result;
     }
 
+    private Map<String, Object> serverAction(HttpExchange exchange, Map<String, Object> body) throws IOException {
+        requirePost(exchange);
+        String action = stringValue(body, "action", "").trim().toLowerCase(Locale.ROOT);
+        String taskName;
+        if ("restart".equals(action)) {
+            taskName = "HSOKMT Restart";
+        } else if ("update".equals(action)) {
+            taskName = "HSOKMT Updater";
+        } else {
+            throw new IllegalArgumentException("action must be restart or update");
+        }
+        Process process = new ProcessBuilder("schtasks.exe", "/Run", "/TN", taskName)
+                .redirectErrorStream(true)
+                .start();
+        try {
+            if (!process.waitFor(10, TimeUnit.SECONDS) || process.exitValue() != 0) {
+                throw new IOException("cannot start scheduled task: " + taskName);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new IOException("server action interrupted", e);
+        }
+        System.out.println("Admin tool requested server action: " + action);
+        Map<String, Object> result = ok();
+        result.put("action", action);
+        result.put("task", taskName);
+        return result;
+    }
+
+    private Map<String, Object> adjustCoin(HttpExchange exchange, Map<String, Object> body) throws SQLException, IOException {
+        requirePost(exchange);
+        String user = stringValue(body, "user", "").trim();
+        long delta = longValue(body, "delta", 0L);
+        if (!user.matches("[a-zA-Z0-9_]{3,40}")) {
+            throw new IllegalArgumentException("invalid account user");
+        }
+        if (delta == 0 || Math.abs(delta) > 2_000_000_000L) {
+            throw new IllegalArgumentException("delta must be between -2000000000 and 2000000000, excluding 0");
+        }
+        long newCoin;
+        try (Connection connection = SQL.gI().getConnection()) {
+            try (PreparedStatement update = connection.prepareStatement(
+                    "UPDATE `account` SET `coin` = GREATEST(0, `coin` + ?) WHERE `user` = ?")) {
+                update.setLong(1, delta);
+                update.setString(2, user);
+                if (update.executeUpdate() != 1) {
+                    throw new IllegalArgumentException("account not found");
+                }
+            }
+            try (PreparedStatement select = connection.prepareStatement(
+                    "SELECT `coin` FROM `account` WHERE `user` = ? LIMIT 1")) {
+                select.setString(1, user);
+                try (ResultSet rs = select.executeQuery()) {
+                    if (!rs.next()) {
+                        throw new IllegalArgumentException("account not found");
+                    }
+                    newCoin = rs.getLong("coin");
+                }
+            }
+            connection.commit();
+        }
+        for (Session session : new ArrayList<>(Session.client_entry)) {
+            if (session != null && user.equalsIgnoreCase(session.user)) {
+                session.coin = newCoin;
+                if (session.p != null) {
+                    Service.send_notice_box(session, "Admin da cap nhat coin. So du moi: " + newCoin);
+                }
+            }
+        }
+        System.out.println("Admin tool coin change: user=" + user + ", delta=" + delta + ", balance=" + newCoin);
+        Map<String, Object> result = ok();
+        result.put("user", user);
+        result.put("delta", delta);
+        result.put("coin", newCoin);
+        return result;
+    }
+
+    private Map<String, Object> searchPlayer(HttpExchange exchange, Map<String, Object> body) throws SQLException {
+        String keyword = stringValue(body, "q", query(exchange).getOrDefault("q", "")).trim();
+        if (keyword.length() < 1 || keyword.length() > 40) {
+            throw new IllegalArgumentException("q must be 1-40 chars");
+        }
+        List<Map<String, Object>> players = new ArrayList<>();
+        String sql = "SELECT `id`,`name`,`level`,`vang`,`kimcuong`,`site`,`date` FROM `player` "
+                + "WHERE CAST(`id` AS CHAR) = ? OR `name` LIKE ? ORDER BY `id` DESC LIMIT 30";
+        try (Connection connection = SQL.gI().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, keyword);
+            ps.setString(2, "%" + keyword + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Map<String, Object> row = new LinkedHashMap<>();
+                    String name = rs.getString("name");
+                    row.put("id", rs.getInt("id"));
+                    row.put("name", name);
+                    row.put("level", rs.getInt("level"));
+                    row.put("vang", rs.getLong("vang"));
+                    row.put("ngoc", rs.getLong("kimcuong"));
+                    row.put("site", rs.getString("site"));
+                    row.put("date", rs.getString("date"));
+                    row.put("online", findOnlinePlayer(name) != null);
+                    players.add(row);
+                }
+            }
+        }
+        Map<String, Object> result = ok();
+        result.put("players", players);
+        return result;
+    }
+
+    private Player findOnlinePlayer(String name) {
+        for (Session session : new ArrayList<>(Session.client_entry)) {
+            if (session != null && session.p != null && name.equalsIgnoreCase(session.p.name)) {
+                return session.p;
+            }
+        }
+        return null;
+    }
+
+    private Map<String, Object> searchItem(HttpExchange exchange, Map<String, Object> body) throws SQLException {
+        int category = intValue(body, "category", intValueFromQuery(exchange, "category", 3));
+        String keyword = stringValue(body, "q", query(exchange).getOrDefault("q", "")).trim();
+        if (category != 3 && category != 4 && category != 7) {
+            throw new IllegalArgumentException("category must be 3, 4 or 7");
+        }
+        if (keyword.length() > 80) {
+            throw new IllegalArgumentException("q is too long");
+        }
+        String table = "item" + category;
+        List<Map<String, Object>> items = new ArrayList<>();
+        String sql = "SELECT * FROM `" + table + "` WHERE CAST(`id` AS CHAR) = ? OR `name` LIKE ? ORDER BY `id` LIMIT 100";
+        try (Connection connection = SQL.gI().getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, keyword);
+            ps.setString(2, "%" + keyword + "%");
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Map<String, Object> row = new LinkedHashMap<>();
+                    row.put("category", category);
+                    row.put("id", rs.getInt("id"));
+                    row.put("name", rs.getString("name"));
+                    if (category == 3) {
+                        row.put("level", rs.getInt("level"));
+                        row.put("type", rs.getInt("type"));
+                        row.put("color", rs.getInt("color"));
+                        row.put("icon", rs.getInt("iconid"));
+                    } else if (category == 4) {
+                        row.put("type", rs.getInt("typepotion"));
+                        row.put("icon", rs.getInt("icon"));
+                        row.put("content", rs.getString("content"));
+                    } else {
+                        row.put("type", rs.getInt("type"));
+                        row.put("icon", rs.getInt("imgid"));
+                        row.put("content", rs.getString("content"));
+                    }
+                    items.add(row);
+                }
+            }
+        }
+        Map<String, Object> result = ok();
+        result.put("items", items);
+        return result;
+    }
+
+    private int intValueFromQuery(HttpExchange exchange, String key, int defaultValue) {
+        String value = query(exchange).get(key);
+        return value == null || value.isBlank() ? defaultValue : Integer.parseInt(value);
+    }
+
+    private Map<String, Object> broadcast(HttpExchange exchange, Map<String, Object> body) throws IOException {
+        requirePost(exchange);
+        String message = stringValue(body, "message", "").trim();
+        if (message.isEmpty() || message.length() > 500) {
+            throw new IllegalArgumentException("message must be 1-500 chars");
+        }
+        Manager.gI().chatKTGprocess("[ADMIN] " + message);
+        Map<String, Object> result = ok();
+        result.put("message", message);
+        return result;
+    }
+
+    private Map<String, Object> settings(HttpExchange exchange, Map<String, Object> body) throws IOException {
+        requirePost(exchange);
+        int exp = intValue(body, "exp", Manager.gI().exp);
+        int maxLevel = intValue(body, "maxLevel", Manager.gI().lvmax);
+        int event = intValue(body, "event", Manager.gI().event);
+        int loginLimit = intValue(body, "loginLimit", Manager.gI().login_limit_per_ip);
+        if (exp < 1 || exp > 1000 || maxLevel < 1 || maxLevel > 1000 || event < -1 || event > 1000 || loginLimit < 0 || loginLimit > 1000) {
+            throw new IllegalArgumentException("setting value is out of range");
+        }
+        Manager.gI().exp = exp;
+        Manager.gI().lvmax = maxLevel;
+        Manager.gI().event = event;
+        Manager.gI().login_limit_per_ip = loginLimit;
+        updateConfigValue("exp", String.valueOf(exp));
+        updateConfigValue("lvmax", String.valueOf(maxLevel));
+        updateConfigValue("event", String.valueOf(event));
+        updateConfigValue("login_limit_per_ip", String.valueOf(loginLimit));
+        Map<String, Object> result = ok();
+        result.put("exp", exp);
+        result.put("maxLevel", maxLevel);
+        result.put("event", event);
+        result.put("loginLimit", loginLimit);
+        return result;
+    }
+
+    private Map<String, Object> scheduleMaintenance(HttpExchange exchange, Map<String, Object> body) {
+        requirePost(exchange);
+        int delayMinutes = intValue(body, "delayMinutes", 5);
+        int durationMinutes = intValue(body, "durationMinutes", 10);
+        boolean kick = boolValue(body, "kick", true);
+        String message = stringValue(body, "message", "Server se bao tri theo lich.").trim();
+        if (delayMinutes < 0 || delayMinutes > 10080 || durationMinutes < 1 || durationMinutes > 1440) {
+            throw new IllegalArgumentException("invalid maintenance schedule");
+        }
+        long now = System.currentTimeMillis();
+        maintenanceStartsAt = now + TimeUnit.MINUTES.toMillis(delayMinutes);
+        maintenanceEndsAt = maintenanceStartsAt + TimeUnit.MINUTES.toMillis(durationMinutes);
+        if (maintenanceStartTask != null) {
+            maintenanceStartTask.cancel(false);
+        }
+        if (maintenanceEndTask != null) {
+            maintenanceEndTask.cancel(false);
+        }
+        maintenanceStartTask = adminScheduler.schedule(() -> {
+            try {
+                Manager.gI().chatKTGprocess("[BAO TRI] " + message);
+                Manager.gI().isServerAdmin = true;
+                if (kick) {
+                    kickNonAdminSessions();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }, delayMinutes, TimeUnit.MINUTES);
+        maintenanceEndTask = adminScheduler.schedule(() -> {
+            Manager.gI().isServerAdmin = false;
+            maintenanceStartsAt = 0L;
+            maintenanceEndsAt = 0L;
+        }, delayMinutes + durationMinutes, TimeUnit.MINUTES);
+        Map<String, Object> result = ok();
+        result.put("startsAt", maintenanceStartsAt);
+        result.put("endsAt", maintenanceEndsAt);
+        result.put("kick", kick);
+        return result;
+    }
+
     private int kickNonAdminSessions() {
         int kicked = 0;
         List<Session> copy;
@@ -560,12 +827,6 @@ public class AdminToolServer {
     }
 
     private String adminHtml() {
-        String defaultToken;
-        try {
-            defaultToken = JSON.writeValueAsString(Manager.gI().admin_tool_token);
-        } catch (Exception e) {
-            defaultToken = "\"\"";
-        }
         return """
                 <!doctype html>
                 <html lang="vi">
@@ -592,6 +853,10 @@ public class AdminToolServer {
                         pre { white-space:pre-wrap; word-break:break-word; background:#050b14; border:1px solid var(--line); border-radius:12px; padding:12px; min-height:90px; }
                         .row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
                         .stat { color:var(--muted); line-height:1.7; }
+                        .wide { grid-column:span 2; }
+                        table { width:100%; border-collapse:collapse; margin-top:10px; font-size:13px; }
+                        th,td { border-bottom:1px solid var(--line); padding:8px; text-align:left; vertical-align:top; }
+                        @media(max-width:700px){ .wide{grid-column:span 1;} }
                     </style>
                 </head>
                 <body>
@@ -607,6 +872,47 @@ public class AdminToolServer {
                         <section class="card">
                             <h3>Status</h3>
                             <div id="stats" class="stat">Chua load.</div>
+                        </section>
+                        <section class="card">
+                            <h3>Van hanh server</h3>
+                            <div class="stat">Restart chi khoi dong lai. Update se git pull, build va restart.</div>
+                            <button class="danger" onclick="serverAction('restart')">Restart server</button>
+                            <button class="ok" onclick="serverAction('update')">Update tu Git</button>
+                        </section>
+                        <section class="card">
+                            <h3>Cong / tru coin</h3>
+                            <label>Ten tai khoan</label><input id="coin_user" placeholder="username">
+                            <label>So coin thay doi</label><input id="coin_delta" value="1000" placeholder="so am de tru">
+                            <button class="ok" onclick="coin()">Cap nhat coin</button>
+                        </section>
+                        <section class="card wide">
+                            <h3>Tim nhan vat</h3>
+                            <div class="row"><input id="player_q" placeholder="ID hoac ten nhan vat"><button onclick="playerSearch()">Tim player</button></div>
+                            <div id="player_result" class="stat"></div>
+                        </section>
+                        <section class="card wide">
+                            <h3>Tra UID / ID vat pham</h3>
+                            <div class="row"><select id="item_category"><option value="3">Item3 - trang bi</option><option value="4">Item4</option><option value="7">Item7</option></select><input id="item_q" placeholder="ID hoac ten vat pham"></div>
+                            <button onclick="itemSearch()">Tra vat pham</button>
+                            <div id="item_result" class="stat"></div>
+                        </section>
+                        <section class="card">
+                            <h3>Thong bao toan server</h3>
+                            <textarea id="broadcast_message" placeholder="Noi dung thong bao"></textarea>
+                            <button onclick="broadcastMessage()">Gui thong bao</button>
+                        </section>
+                        <section class="card">
+                            <h3>Lich bao tri</h3>
+                            <div class="row"><div><label>Bat dau sau (phut)</label><input id="mt_delay" value="5"></div><div><label>Thoi luong (phut)</label><input id="mt_duration" value="10"></div></div>
+                            <label>Noi dung</label><input id="mt_message" value="Server se bao tri theo lich.">
+                            <label class="checkrow"><input id="mt_kick" type="checkbox" checked> Kick non-admin khi bat dau</label>
+                            <button class="danger" onclick="maintenanceSchedule()">Dat lich bao tri</button>
+                        </section>
+                        <section class="card">
+                            <h3>Tuy chinh server</h3>
+                            <div class="row"><div><label>EXP</label><input id="setting_exp" value="2"></div><div><label>Level max</label><input id="setting_level" value="139"></div></div>
+                            <div class="row"><div><label>Event</label><input id="setting_event" value="0"></div><div><label>Login/IP</label><input id="setting_login" value="1"></div></div>
+                            <button onclick="saveSettings()">Luu cau hinh</button>
                         </section>
                         <section class="card">
                             <h3>Giftcode</h3>
@@ -663,9 +969,8 @@ public class AdminToolServer {
                     <pre id="out"></pre>
                 </main>
                 <script>
-                    const serverToken = __ADMIN_TOKEN__;
                     const tokenInput = document.getElementById('token');
-                    tokenInput.value = localStorage.getItem('hsoAdminToken') || serverToken || '';
+                    tokenInput.value = localStorage.getItem('hsoAdminToken') || '';
                     function saveToken(){ localStorage.setItem('hsoAdminToken', tokenInput.value); }
                     async function api(path, body) {
                         try {
@@ -689,7 +994,11 @@ public class AdminToolServer {
                             if(print) document.getElementById('out').textContent = `HTTP ${res.status}\\n` + JSON.stringify(j, null, 2);
                             if(j.ok) {
                                 document.getElementById('stats').innerHTML =
-                                    `Sessions: ${j.sessions}<br>Online real: ${j.onlinePlayers}<br>Bot players: ${j.fakeBots}<br>Shown online: ${j.shownOnline}<br>Bot auto: ${j.botAutoDistribute}<br>Farm/Cho/VIP/Boss: ${j.botFarmers}/${j.botSellers}/${j.botVip}/${j.botBossHunters}<br>Bot fallback map/zone: ${j.botMapId}/${j.botZoneId} (${j.botX},${j.botY})<br>Maintenance: ${j.maintenance}<br>Debug: ${j.debug}<br>Login limit/IP: ${j.loginLimitPerIp}`;
+                                    `Sessions: ${j.sessions}<br>Online real: ${j.onlinePlayers}<br>Bot players: ${j.fakeBots}<br>Shown online: ${j.shownOnline}<br>Bot auto: ${j.botAutoDistribute}<br>Farm/Cho/VIP/Boss: ${j.botFarmers}/${j.botSellers}/${j.botVip}/${j.botBossHunters}<br>Bot fallback map/zone: ${j.botMapId}/${j.botZoneId} (${j.botX},${j.botY})<br>Maintenance: ${j.maintenance}<br>Debug: ${j.debug}<br>EXP / Level max / Event: ${j.expMultiplier} / ${j.maxLevel} / ${j.event}<br>Login limit/IP: ${j.loginLimitPerIp}`;
+                                document.getElementById('setting_exp').value=j.expMultiplier;
+                                document.getElementById('setting_level').value=j.maxLevel;
+                                document.getElementById('setting_event').value=j.event;
+                                document.getElementById('setting_login').value=j.loginLimitPerIp;
                             } else {
                                 document.getElementById('stats').innerHTML = 'Token sai hoac API loi: ' + (j.error || res.status);
                             }
@@ -707,13 +1016,22 @@ public class AdminToolServer {
                     function castle(mode){ api('/api/castle/open', {mode}); }
                     function ban(ban){ api('/api/ban-player', {playerId:n('ban_id'), ban, kick:true}); }
                     function loginLimit(){ api('/api/login-limit', {limit:n('login_limit')}); }
+                    function serverAction(action){ if(confirm(action==='update'?'Git pull, build va restart server?':'Restart server ngay?')) api('/api/server-action',{action}); }
+                    function coin(){ api('/api/account/coin',{user:v('coin_user'),delta:n('coin_delta')}); }
+                    async function playerSearch(){ const j=await api('/api/player/search',{q:v('player_q')}); if(j&&j.ok) document.getElementById('player_result').innerHTML=renderTable(j.players,['id','name','level','vang','ngoc','site','online']); }
+                    async function itemSearch(){ const j=await api('/api/item/search',{category:n('item_category'),q:v('item_q')}); if(j&&j.ok) document.getElementById('item_result').innerHTML=renderTable(j.items,['category','id','name','type','level','color','icon','content']); }
+                    function broadcastMessage(){ api('/api/broadcast',{message:v('broadcast_message')}); }
+                    function maintenanceSchedule(){ api('/api/maintenance/schedule',{delayMinutes:n('mt_delay'),durationMinutes:n('mt_duration'),message:v('mt_message'),kick:document.getElementById('mt_kick').checked}); }
+                    function saveSettings(){ api('/api/settings',{exp:n('setting_exp'),maxLevel:n('setting_level'),event:n('setting_event'),loginLimit:n('setting_login')}); }
+                    function esc(x){ return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+                    function renderTable(rows,cols){ if(!rows||!rows.length)return 'Khong tim thay.'; return '<table><thead><tr>'+cols.map(c=>'<th>'+esc(c)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(c=>'<td>'+esc(r[c])+'</td>').join('')+'</tr>').join('')+'</tbody></table>'; }
                     function v(id){ return document.getElementById(id).value; }
                     function n(id){ return Number(v(id) || 0); }
                     status(false);
                 </script>
                 </body>
                 </html>
-                """.replace("__ADMIN_TOKEN__", defaultToken);
+                """;
     }
 
     private interface ApiHandler {

@@ -707,6 +707,9 @@ public class Item {
     }
 
     public void add_item_box3(Item3 buffer) {
+        if (buffer == null || box3 == null) {
+            return;
+        }
         for (int j = 0; j < box3.length; j++) {
             if (box3[j] == null) {
                 box3[j] = new Item3(buffer);
@@ -834,8 +837,7 @@ public class Item {
             return;
         }
         if (type == 1) { // cat vao
-            if (((get_box_able() < 1 && tem == 3) || (get_box_able() < 1 && tem == 4 && total_item_by_id_box(4, id) < 1)
-                    || (get_box_able() < 1 && tem == 7 && total_item_by_id_box(7, id) < 1)) && conn.p.type_process_chest == 0) {
+            if (conn.p.type_process_chest == 0 && get_box_able() < 1) {
                 Service.send_notice_box(p.conn, p.conn.language.fullbox);
                 return;
             }
@@ -846,6 +848,9 @@ public class Item {
             }
             switch (tem) {
                 case 3: {
+                    if (id < 0 || id >= inventory3.length || inventory3[id] == null) {
+                        return;
+                    }
                     if (conn.p.type_process_chest == 0) {
                         add_item_box3(inventory3[id]);
                     } else {
@@ -856,6 +861,9 @@ public class Item {
                 }
                 case 4:
                 case 7: {
+                    if (total_item_by_id(tem, id) <= 0) {
+                        return;
+                    }
                     if ((total_item_by_id(tem, id) + total_item_by_id_box(tem, id) + total_item_by_id_bag(tem, id)) > 32000) {
                         Service.send_notice_box(p.conn, p.conn.language.soluonglon);
                         return;

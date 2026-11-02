@@ -17,6 +17,13 @@ git -C $AppDir pull --ff-only origin $Branch
 Set-Location $AppDir
 & (Join-Path $AppDir 'mvnw.cmd') '-q' '-DskipTests' 'clean' 'package'
 if ($LASTEXITCODE -ne 0) { throw 'Maven build failed. The server was left stopped.' }
+$principal = New-ScheduledTaskPrincipal -UserId 'SYSTEM' -LogonType ServiceAccount -RunLevel Highest
+$updateScript = Join-Path $AppDir 'scripts\update-vps-windows.ps1'
+$updateAction = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$updateScript`""
+Register-ScheduledTask -TaskName 'HSOKMT Updater' -Action $updateAction -Principal $principal -Force | Out-Null
+$restartScript = Join-Path $AppDir 'scripts\restart-server.ps1'
+$restartAction = New-ScheduledTaskAction -Execute 'powershell.exe' -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$restartScript`""
+Register-ScheduledTask -TaskName 'HSOKMT Restart' -Action $restartAction -Principal $principal -Force | Out-Null
 New-NetFirewallRule -DisplayName 'HSOKMT Game Server' -Direction Inbound -Protocol TCP -LocalPort 19129 -Action Allow -ErrorAction SilentlyContinue | Out-Null
 New-NetFirewallRule -DisplayName 'HSOKMT Admin Panel' -Direction Inbound -Protocol TCP -LocalPort 19130 -Action Allow -ErrorAction SilentlyContinue | Out-Null
 Start-ScheduledTask -TaskName $TaskName
