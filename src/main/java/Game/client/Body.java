@@ -18,10 +18,6 @@ public class Body extends MainObject {
 
     private Player p;
 
-    // --- TÊ CÓNG control: block auto-heal HP/MP thêm 7s kể từ lúc TÊ CÓNG xuất hiện
-    private long teCongBlockUntil = 0L;
-    private boolean teCongWasActive = false;
-
     protected void SetPlayer(Player p) {
         if (this.p != null) {
             return;
@@ -234,6 +230,12 @@ public class Body extends MainObject {
         }
         if (get_EffDefault(StrucEff.NOI_TAI_BANG) != null) {
             hpm = hpm / 5 * 4;
+            if (hp > hpm) {
+                hp = (int) hpm;
+            }
+        }
+        if (get_EffDefault(StrucEff.TE_CONG) != null) {
+            hpm = Math.max(1, hpm * 80 / 100);
             if (hp > hpm) {
                 hp = (int) hpm;
             }
@@ -816,17 +818,7 @@ public class Body extends MainObject {
                 return;
             }
 
-            // === TÊ CÓNG tracking (để chặn auto-heal thêm 7s sau khi xuất hiện) ===
-            EffTemplate te_cong = p.get_EffDefault(StrucEff.TE_CONG);
             long now = System.currentTimeMillis();
-            if (te_cong != null && !teCongWasActive) {
-                teCongBlockUntil = now + 7000L; // block thêm 7s kể từ lúc vừa xuất hiện
-                teCongWasActive = true;
-            } else if (te_cong == null && teCongWasActive && now >= teCongBlockUntil) {
-                // chỉ khi hết block window mới reset cờ
-                teCongWasActive = false;
-            }
-            boolean blockHealByTeCong = (te_cong != null) || (now < teCongBlockUntil);
 
             // <auto +hp, mp>
             EffTemplate vet_thuong_sau = p.get_EffDefault(StrucEff.VET_THUONG_SAU);
@@ -840,7 +832,7 @@ public class Body extends MainObject {
             if (percent_hp > 0
                     && p.time_buff_hp < now
                     && vet_thuong_sau == null
-                    && !blockHealByTeCong) {
+                    && p.canRestoreHp()) {
                 p.time_buff_hp = now + 5000L;
                 if (p.hp < p.body.get_HpMax()) {
                     long param = (((long) p.body.get_HpMax()) * (percent_hp / 100)) / 100;
@@ -848,7 +840,6 @@ public class Body extends MainObject {
                 }
             }
 
-            // AUTO +MP (chặn khi TÊ CÓNG & trong 7s sau đó)
             EffTemplate eff_tan_phe = p.getEffTinhTu(EffTemplate.TAN_PHE);
             par = 0;
             if (get_pet_follow() != null) {
@@ -857,8 +848,7 @@ public class Body extends MainObject {
             int percent_mp = p.body.total_skill_param(30) + p.body.total_item_param(30) + par;
             if (percent_mp > 0
                     && p.time_buff_mp < now
-                    && eff_tan_phe == null
-                    && !blockHealByTeCong) {
+                    && eff_tan_phe == null) {
                 p.time_buff_mp = now + 5000L;
                 if (p.mp < p.body.get_MpMax()) {
                     long param = (((long) p.body.get_MpMax()) * (percent_mp / 100)) / 100;

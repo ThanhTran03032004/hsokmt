@@ -932,7 +932,7 @@ public class Squire extends Player {
         //<editor-fold defaultstate="collapsed" desc="Hiệu ứng Crit vv       ...">
         List<Eff_TextFire> ListEf = new ArrayList<>();
 
-        if (hutHP > 0) {
+        if (hutHP > 0 && focus.canRestoreHp()) {
             ListEf.add(new Eff_TextFire(0, (int) dame));
             ListEf.add(new Eff_TextFire(2, hutHP));
             focus.hp += hutHP;
@@ -972,6 +972,9 @@ public class Squire extends Player {
 //                DAMEpst = 1;
 //            }
 
+            if (DAMEpst < 0 && !ObjAtk.canRestoreHp()) {
+                DAMEpst = 0;
+            }
             ListEf.add(new Eff_TextFire(5, DAMEpst));
             ObjAtk.hp -= DAMEpst;
             if (ObjAtk.hp <= 0) {

@@ -182,6 +182,13 @@ public class ChienTruong {
         }
     }
 
+    public synchronized void start_now() throws IOException {
+        if (this.status != 1) {
+            throw new IllegalStateException("Battlefield registration is not open");
+        }
+        this.start();
+    }
+
     public synchronized void update_house_die(short id) throws IOException {
         switch (id) {
             case 89: { // nha set type 4

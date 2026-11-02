@@ -57,6 +57,7 @@ public class AdminToolServer {
             server.createContext("/api/maintenance", exchange -> handleApi(exchange, this::maintenance));
             server.createContext("/api/debug", exchange -> handleApi(exchange, this::debug));
             server.createContext("/api/battlefield/open", exchange -> handleApi(exchange, this::openBattlefield));
+            server.createContext("/api/battlefield/start", exchange -> handleApi(exchange, this::startBattlefield));
             server.createContext("/api/castle/open", exchange -> handleApi(exchange, this::openCastle));
             server.createContext("/api/ban-player", exchange -> handleApi(exchange, this::banPlayer));
             server.createContext("/api/login-limit", exchange -> handleApi(exchange, this::setLoginLimit));
@@ -282,6 +283,15 @@ public class AdminToolServer {
         requirePost(exchange);
         ChienTruong.running = true;
         ChienTruong.gI().open_register();
+        Map<String, Object> result = ok();
+        result.put("battlefieldRunning", ChienTruong.running);
+        result.put("battlefieldStatus", ChienTruong.gI().getStatus());
+        return result;
+    }
+
+    private Map<String, Object> startBattlefield(HttpExchange exchange, Map<String, Object> body) throws IOException {
+        requirePost(exchange);
+        ChienTruong.gI().start_now();
         Map<String, Object> result = ok();
         result.put("battlefieldRunning", ChienTruong.running);
         result.put("battlefieldStatus", ChienTruong.gI().getStatus());
@@ -632,6 +642,7 @@ public class AdminToolServer {
                         <section class="card">
                             <h3>Su kien</h3>
                             <button class="ok" onclick="battlefield()">Mo dang ky chien truong</button>
+                            <button class="danger" onclick="startBattlefield()">Bat dau chien truong ngay</button>
                             <button class="ok" onclick="castle('register')">Mo dang ky chiem thanh</button>
                             <button class="ok" onclick="castle('attack')">Mo chien chiem thanh</button>
                             <button class="danger" onclick="castle('close')">Dong chiem thanh</button>
@@ -692,6 +703,7 @@ public class AdminToolServer {
                     function maintenance(enabled,kick){ api('/api/maintenance', {enabled,kick}); }
                     function debug(enabled){ api('/api/debug', {debug:enabled, logErrorLogin:enabled}); }
                     function battlefield(){ api('/api/battlefield/open', {}); }
+                    function startBattlefield(){ api('/api/battlefield/start', {}); }
                     function castle(mode){ api('/api/castle/open', {mode}); }
                     function ban(ban){ api('/api/ban-player', {playerId:n('ban_id'), ban, kick:true}); }
                     function loginLimit(){ api('/api/login-limit', {limit:n('login_limit')}); }

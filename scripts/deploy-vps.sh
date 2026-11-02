@@ -16,6 +16,10 @@ run_systemctl() {
 
 cd "$APP_DIR"
 
+if [[ ! -x "$JAVA_HOME/bin/java" ]]; then
+  JAVA_HOME="$(dirname "$(dirname "$(readlink -f "$(command -v java)")")")"
+fi
+
 if [ ! -d .git ]; then
   echo "Repo not found in $APP_DIR"
   exit 1
@@ -32,7 +36,7 @@ git fetch origin "$DEPLOY_BRANCH"
 git checkout "$DEPLOY_BRANCH"
 git pull --ff-only origin "$DEPLOY_BRANCH"
 
-./mvnw -q -DskipTests package
+./mvnw -q -DskipTests clean package
 
 run_systemctl restart "$SERVICE_NAME"
 run_systemctl --no-pager --lines=20 status "$SERVICE_NAME"

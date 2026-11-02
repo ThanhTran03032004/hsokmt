@@ -727,7 +727,7 @@ public class Service {
     }
 
     public static void usepotion(Player p, int type, long param) throws IOException {
-        if (p.isdie) {
+        if (p.isdie || (type == 0 && param > 0 && !p.canRestoreHp())) {
             return;
         }
         Message m = new Message(32);

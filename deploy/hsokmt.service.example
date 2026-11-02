@@ -5,12 +5,14 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/opt/hsokmt
-Environment="JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64"
-Environment="PATH=/usr/lib/jvm/java-21-openjdk-amd64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
-ExecStart=/usr/bin/java -jar /opt/hsokmt/target/hsokmt-0.0.1-SNAPSHOT-jar-with-dependencies.jar
+User=hsokmt
+Group=hsokmt
+EnvironmentFile=-/etc/hsokmt/hsokmt.env
+ExecStart=/usr/bin/java $JAVA_OPTS -jar /opt/hsokmt/target/hsokmt-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 Restart=always
 RestartSec=5
 SuccessExitStatus=143
+LimitNOFILE=65535
 
 [Install]
 WantedBy=multi-user.target

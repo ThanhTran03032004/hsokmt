@@ -62,8 +62,9 @@ public class MainObject {
                                 }
                                 if (temp.id == 24 || temp.id == 23 || temp.id == 0
                                         || temp.id == 2 || temp.id == 3
-                                        || temp.id == 4 || temp.id == StrucEff.NOI_TAI_BANG) {
-                                    if (temp.id == 2 && isPlayer()) {
+                                        || temp.id == 4 || temp.id == StrucEff.NOI_TAI_BANG
+                                        || temp.id == StrucEff.TE_CONG) {
+                                    if (temp.id == 2 && isPlayer() && canRestoreHp()) {
                                         this.hp += ((Player) this).hp_restore;
                                     }
                                     Service.send_char_main_in4((Player) this);
@@ -177,6 +178,10 @@ public class MainObject {
             }
         }
         return null;
+    }
+
+    public boolean canRestoreHp() {
+        return get_EffDefault(StrucEff.TE_CONG) == null;
     }
     
     public EffTemplate get_EffMe_Kham(int id) {
@@ -802,7 +807,7 @@ if (ObjAtk.isPlayer() && focus.isPlayer() && focus.typepk == -1) {
             //<editor-fold defaultstate="collapsed" desc="Hiệu ứng Crit vv       ...">
             List<Eff_TextFire> ListEf = new ArrayList<>();
             
-            if (hutHP > 0) {
+            if (hutHP > 0 && focus.canRestoreHp()) {
                 ListEf.add(new Eff_TextFire(0, (int) dame));
                 ListEf.add(new Eff_TextFire(2, hutHP));
                 focus.hp += hutHP;
@@ -842,6 +847,9 @@ if (ObjAtk.isPlayer() && focus.isPlayer() && focus.typepk == -1) {
 //                    DAMEpst = 1;
 //                }
                 
+                if (DAMEpst < 0 && !ObjAtk.canRestoreHp()) {
+                    DAMEpst = 0;
+                }
                 ListEf.add(new Eff_TextFire(5, DAMEpst));
                 ObjAtk.hp -= DAMEpst;
                 if (ObjAtk.hp <= 0) {
@@ -1154,9 +1162,12 @@ if (ObjAtk.isPlayer() && focus.isPlayer() && focus.typepk == -1) {
                                 p_focus.add_EffDefault(StrucEff.VET_THUONG_SAU, 0, my_pet.getParam((byte) 98));
                                 Service.send_notice_nobox_white(p_focus.conn, "Bạn bị vết thương sâu");
                             }
+                            focus.hp -= dame_pet;
                             if (focus.isPlayer() && Util.random(10000) < my_pet.getParam((byte) 67)) {
                                 Player p_focus = (Player) focus;
-                                p_focus.add_EffDefault(StrucEff.TE_CONG, 0, 5000);
+                                p_focus.add_EffDefault(StrucEff.TE_CONG, 20, 5000);
+                                Service.send_char_main_in4(p_focus);
+                                MapService.update_in4_2_other_inside(map, p_focus);
                                 Service.send_notice_nobox_white(p_focus.conn, "Bạn bị tê cóng");
                             } else if (focus.isPlayer() && Util.random(10000) < my_pet.getParam((byte) 85)) {
                                 focus.add_EffDefault(StrucEff.KhienMaThuat, 0, my_pet.getParam((byte) 86));
@@ -1175,7 +1186,6 @@ if (ObjAtk.isPlayer() && focus.isPlayer() && focus.typepk == -1) {
                             m.writer().writeByte(1);
                             m.writer().writeShort(focus.ID);
                             m.writer().writeInt(dame_pet);
-                            focus.hp -= dame_pet;
                             m.writer().writeInt(focus.hp);
                             m.writer().writeInt(p.hp);
                             m.writer().writeInt(p.body.get_HpMax());
@@ -1265,6 +1275,9 @@ if (ObjAtk.isPlayer() && focus.isPlayer() && focus.typepk == -1) {
     }
     
     public void setHp(MainObject atk, int dame) {
+        if (dame < 0 && !canRestoreHp()) {
+            return;
+        }
         this.hp -= dame;
     }
     

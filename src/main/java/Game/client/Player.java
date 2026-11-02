@@ -1546,7 +1546,9 @@ public class Player extends Body {
             if (level == Manager.gI().lvmax && exp >= Level.entry.get(level - 1).exp) {
                 exp = Level.entry.get(level - 1).exp - 1;
             }
-            hp = body.get_HpMax();
+            if (canRestoreHp()) {
+                hp = body.get_HpMax();
+            }
             mp = body.get_MpMax();
             m = new Message(33);
             m.writer().writeShort(ID);
@@ -1721,7 +1723,9 @@ public class Player extends Body {
 //        kynang -= 1;
         kynang = (short) (1 + Level.get_kynang_by_level(level - 1));
         kynang -= sk_110;
-        hp = body.get_HpMax();
+        if (canRestoreHp()) {
+            hp = body.get_HpMax();
+        }
         mp = body.get_MpMax();
         Service.send_char_main_in4(this);
         for (int i = 0; i < map.players.size(); i++) {
@@ -1740,7 +1744,9 @@ public class Player extends Body {
         point3 = (short) (4 + level);
         point4 = (short) (4 + level);
         tiemnang -= (short) (point1 + point2 + point3 + point4);
-        hp = body.get_HpMax();
+        if (canRestoreHp()) {
+            hp = body.get_HpMax();
+        }
         mp = body.get_MpMax();
         Service.send_char_main_in4(this);
         for (int i = 0; i < map.players.size(); i++) {

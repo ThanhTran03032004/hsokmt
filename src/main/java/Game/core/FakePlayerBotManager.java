@@ -1514,7 +1514,9 @@ public class FakePlayerBotManager {
         player.point3 = (short) (50 + level);
         player.point4 = (short) (35 + level);
         if (player.body != null) {
-            player.hp = player.body.get_HpMax();
+            if (player.canRestoreHp()) {
+                player.hp = player.body.get_HpMax();
+            }
             player.mp = player.body.get_MpMax();
         }
     }
