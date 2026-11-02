@@ -384,6 +384,7 @@ public class MessageHandler {
                 if (conn.p.isdie) {
                     return;
                 }
+                MapService.sync_mobs_after_map_ready(conn.p);
                 AdminToolServer.gI().sendFakeBotPresence(conn.p);
                 if (Map.is_map_chien_truong(conn.p.map.map_id)) {
                     ChienTruong.gI().send_info(conn.p);

@@ -387,6 +387,21 @@ public class MapService {
     }
 
     public static void update_inside_player(Map map, Message m, Player p) throws IOException {
+        update_inside_player(map, m, p, true);
+    }
+
+    public static void sync_mobs_after_map_ready(Player p) throws IOException {
+        if (p == null || p.map == null) {
+            return;
+        }
+        p.other_mob_inside.clear();
+        p.other_mob_inside_update.clear();
+        Message unusedPlayerMessage = new Message(4);
+        update_inside_player(p.map, unusedPlayerMessage, p, false);
+        unusedPlayerMessage.cleanup();
+    }
+
+    private static void update_inside_player(Map map, Message m, Player p, boolean includePlayers) throws IOException {
         Message m4 = new Message(4);
         for (MobCay temp : map.mobEvens) {
             if ((Math.abs(temp.x - p.x) < 300 && Math.abs(temp.y - p.y) < 300) || Map.is_map__load_board_player(map.map_id)) {
@@ -477,7 +492,7 @@ public class MapService {
         //
         long _time = System.currentTimeMillis();
         boolean isth = p.get_EffMe_Kham(StrucEff.TangHinh) != null;
-        for (int i = 0; i < map.players.size() && !isth; i++) {
+        for (int i = 0; includePlayers && i < map.players.size() && !isth; i++) {
             Player p0 = map.players.get(i);
             if (p0.ID == p.ID) {
                 continue;
