@@ -17,7 +17,7 @@ Cấu hình database trong `hso.conf`:
 
 ```text
 mysql-host: 127.0.0.1
-mysql-port: 3307
+mysql-port: 3306
 mysql-user: hsokmt
 mysql-password: MAT_KHAU
 mysql-database: xnxx
