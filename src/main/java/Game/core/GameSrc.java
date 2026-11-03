@@ -51,13 +51,21 @@ public class GameSrc {
             return;
         }
         if (tem == 7) {
+            Item3 selectedItem = getInventory3Item(conn, conn.p.id_item_rebuild);
+            if (!hasValidRebuildTier(selectedItem)) {
+                conn.p.id_item_rebuild = -1;
+                conn.p.is_use_mayman = false;
+                conn.p.id_use_mayman = -1;
+                Service.send_notice_box(conn, "Hãy chọn lại trang bị muốn cường hóa");
+                return;
+            }
             if (id != 13 && id != 14 && id != 4) {
                 Service.send_notice_box(conn, "Chỉ nên dùng cỏ 4 lá hoặc đá 3 màu");
                 return;
             }
             Message m = new Message(67);
             m.writer().writeByte(type);
-            int tier = conn.p.item.inventory3[conn.p.id_item_rebuild].tier;
+            int tier = selectedItem.tier;
             switch (type) {
                 case 0: {
                     m.writer().writeShort(id);
@@ -88,24 +96,28 @@ public class GameSrc {
             if (conn.ac_admin > 3 && Manager.BuffAdminMaterial) {
                 next = true;
             }
-            if (type == 2 && !checkmaterial(conn, conn.p.id_item_rebuild, tem) && !next) {
+            if (type == 2 && !hasValidRebuildTier(getInventory3Item(conn, conn.p.id_item_rebuild))) {
+                conn.p.id_item_rebuild = -1;
+                Service.send_notice_box(conn, "Hãy chọn lại trang bị muốn cường hóa");
+                return;
+            }
+            if (type == 2 && conn.p.time_speed_rebuild > System.currentTimeMillis()) {
+                Service.send_notice_nobox_white(conn, "Thao tác cường hóa quá nhanh");
+                return;
+            }
+            if (type == 2 && !next && !checkmaterial(conn, conn.p.id_item_rebuild, tem)) {
                 m.writer().writeByte(3);
                 m.writer().writeUTF("Không đủ nguyên liệu");
             } else {
                 m.writer().writeByte(type);
                 switch (type) {
                     case 0: {
-                        Item3 checkit = conn.p.item.inventory3[id];
-                        if (checkit.id >= 4587 && checkit.id <= 4590) {
+                        Item3 it = getInventory3Item(conn, id);
+                        if (!hasValidRebuildTier(it) || !check_item_can_rebuild(it.type)) {
                             Service.send_notice_box(conn, "Trang bị không phù hợp");
                             return;
                         }
-                        Item3 it = conn.p.item.inventory3[id];
-                        if (it == null || !check_item_can_rebuild(it.type)) {
-                            Service.send_notice_box(conn, "Trang bị không phù hợp");
-                            return;
-                        }
-                        if (Part_fashion.fashions.contains(checkit.id) || Part_fashion.fashions.contains(it.id)) {
+                        if ((it.id >= 4587 && it.id <= 4590) || Part_fashion.fashions.contains(it.id)) {
                             Service.send_notice_box(conn, "Trang bị không phù hợp");
                             return;
                         }
@@ -132,18 +144,8 @@ public class GameSrc {
                         break;
                     }
                     case 2: {
-                        if (conn.p.time_speed_rebuild > System.currentTimeMillis()) {
-                            if (++conn.p.enough_time_disconnect > 2) {
-                                conn.close();
-                            }
-                            return;
-                        }
                         conn.p.time_speed_rebuild = System.currentTimeMillis() + 4500L;
-                        conn.p.enough_time_disconnect = 0;
-                        Item3 it_upgrade = conn.p.item.inventory3[conn.p.id_item_rebuild];
-                        if (it_upgrade == null) {
-                            return;
-                        }
+                        Item3 it_upgrade = getInventory3Item(conn, conn.p.id_item_rebuild);
                         if (Part_fashion.fashions.contains(it_upgrade.id)) {
                             Service.send_notice_box(conn, "Trang bị không phù hợp");
                             return;
@@ -240,6 +242,18 @@ public class GameSrc {
         }
     }
 
+    private static Item3 getInventory3Item(Session conn, int index) {
+        if (conn == null || conn.p == null || conn.p.item == null || conn.p.item.inventory3 == null
+                || index < 0 || index >= conn.p.item.inventory3.length) {
+            return null;
+        }
+        return conn.p.item.inventory3[index];
+    }
+
+    private static boolean hasValidRebuildTier(Item3 item) {
+        return item != null && item.tier >= 0 && item.tier < percent.length;
+    }
+
     private static boolean check_item_can_rebuild(byte type) {
         switch (type) {
             case 0: // coat
@@ -269,140 +283,69 @@ public class GameSrc {
     }
 
     private static boolean checkmaterial(Session conn, short id, byte tem) throws IOException {
-        Item3 it3 = conn.p.item.inventory3[id];
-        switch (it3.tier) {
-            case 0:
-            case 1:
-            case 2: {
-                if (tem == 0) {
-                    if (conn.p.get_vang() < 5000) {
-                        return false;
-                    }
-                    conn.p.update_vang(-5000, "Trừ %s vàng nâng cấp trang bị");
-                } else {
-                    if (conn.p.get_ngoc() < 5) {
-                        return false;
-                    }
-                    conn.p.update_ngoc(-5);
-                }
-                if (conn.p.item.total_item_by_id(7, 0) > 0 && conn.p.item.total_item_by_id(7, 1) > 0) {
-                    conn.p.item.remove(7, 0, 1);
-                    conn.p.item.remove(7, 1, 1);
-                    updatematerial(conn, 7, new short[]{0, 1});
-                    return true;
-                }
-                break;
-            }
-            case 3:
-            case 4:
-            case 5: {
-                if (tem == 0) {
-                    if (conn.p.get_vang() < 6000) {
-                        return false;
-                    }
-                    conn.p.update_vang(-6000, "Trừ %s vàng nâng cấp trang bị");
-                } else {
-                    if (conn.p.get_ngoc() < 7) {
-                        return false;
-                    }
-                    conn.p.update_ngoc(-7);
-                }
-                if (conn.p.item.total_item_by_id(7, 0) > 0 && conn.p.item.total_item_by_id(7, 1) > 0) {
-                    conn.p.item.remove(7, 0, 1);
-                    conn.p.item.remove(7, 1, 1);
-                    updatematerial(conn, 7, new short[]{0, 1});
-                    return true;
-                }
-                break;
-            }
-            case 6:
-            case 7:
-            case 8: {
-                if (tem == 0) {
-                    if (conn.p.get_vang() < 8000) {
-                        return false;
-                    }
-                    conn.p.update_vang(-8000, "Trừ %s vàng nâng cấp trang bị");
-                } else {
-                    if (conn.p.get_ngoc() < 10) {
-                        return false;
-                    }
-                    conn.p.update_ngoc(-10);
-                }
-                if (conn.p.item.total_item_by_id(7, 0) > 0 && conn.p.item.total_item_by_id(7, 1) > 0
-                        && conn.p.item.total_item_by_id(7, 2) > 0) {
-                    conn.p.item.remove(7, 0, 1);
-                    conn.p.item.remove(7, 1, 1);
-                    conn.p.item.remove(7, 2, 1);
-                    updatematerial(conn, 7, new short[]{0, 1, 2});
-                    return true;
-                }
-                break;
-            }
-            case 9:
-            case 10: {
-                if (tem == 0) {
-                    if (conn.p.get_vang() < 10000) {
-                        return false;
-                    }
-                    conn.p.update_vang(-10000, "Trừ %s vàng nâng cấp trang bị");
-                } else {
-                    if (conn.p.get_ngoc() < 15) {
-                        return false;
-                    }
-                    conn.p.update_ngoc(-15);
-                }
-                if (conn.p.item.total_item_by_id(7, 0) > 0 && conn.p.item.total_item_by_id(7, 1) > 0
-                        && conn.p.item.total_item_by_id(7, 2) > 0) {
-                    conn.p.item.remove(7, 0, 1);
-                    conn.p.item.remove(7, 1, 1);
-                    conn.p.item.remove(7, 2, 1);
-                    updatematerial(conn, 7, new short[]{0, 1, 2});
-                    return true;
-                }
-                break;
-            }
-            case 11:
-            case 12:
-            case 13:
-            case 14: {
-                if (tem == 0) {
-                    if (conn.p.get_vang() < 10000) {
-                        return false;
-                    }
-                    conn.p.update_vang(-10000, "Trừ %s vàng nâng cấp trang bị");
-                } else {
-                    if (conn.p.get_ngoc() < 20) {
-                        return false;
-                    }
-                    conn.p.update_ngoc(-20);
-                }
-                if (conn.p.item.total_item_by_id(7, 0) > 0 && conn.p.item.total_item_by_id(7, 1) > 0
-                        && conn.p.item.total_item_by_id(7, 2) > 0 && conn.p.item.total_item_by_id(7, 3) > 0) {
-                    conn.p.item.remove(7, 0, 1);
-                    conn.p.item.remove(7, 1, 1);
-                    conn.p.item.remove(7, 2, 1);
-                    conn.p.item.remove(7, 3, 1);
-                    updatematerial(conn, 7, new short[]{0, 1, 2, 3});
-                    return true;
-                }
-                break;
+        Item3 item = getInventory3Item(conn, id);
+        if (!hasValidRebuildTier(item) || (tem != 0 && tem != 1)) {
+            return false;
+        }
+
+        int goldCost;
+        int gemCost;
+        short[] materialIds;
+        if (item.tier <= 2) {
+            goldCost = 5_000;
+            gemCost = 5;
+            materialIds = new short[]{0, 1};
+        } else if (item.tier <= 5) {
+            goldCost = 6_000;
+            gemCost = 7;
+            materialIds = new short[]{0, 1};
+        } else if (item.tier <= 8) {
+            goldCost = 8_000;
+            gemCost = 10;
+            materialIds = new short[]{0, 1, 2};
+        } else if (item.tier <= 10) {
+            goldCost = 10_000;
+            gemCost = 15;
+            materialIds = new short[]{0, 1, 2};
+        } else {
+            goldCost = 10_000;
+            gemCost = 20;
+            materialIds = new short[]{0, 1, 2, 3};
+        }
+
+        if ((tem == 0 && conn.p.get_vang() < goldCost)
+                || (tem == 1 && conn.p.get_ngoc() < gemCost)) {
+            return false;
+        }
+        for (short materialId : materialIds) {
+            if (conn.p.item.total_item_by_id(7, materialId) < 1) {
+                return false;
             }
         }
-        return false;
+
+        if (tem == 0) {
+            conn.p.update_vang(-goldCost, "Trừ %s vàng nâng cấp trang bị");
+        } else {
+            conn.p.update_ngoc(-gemCost);
+        }
+        for (short materialId : materialIds) {
+            conn.p.item.remove(7, materialId, 1);
+        }
+        updatematerial(conn, 7, materialIds);
+        return true;
     }
 
     private static void updatematerial(Session conn, int b, short[] id) throws IOException {
         conn.p.item.char_inventory(7);
-        Message m = new Message(16);
-        for (int i = 0; i < id.length; i++) {
+        for (short materialId : id) {
+            Message m = new Message(16);
             m.writer().writeByte(1);
             m.writer().writeByte(b);
             m.writer().writeLong(conn.p.get_vang());
             m.writer().writeInt(conn.p.get_ngoc());
             m.writer().writeByte(b);
-            m.writer().writeShort(id[i]);
-            m.writer().writeShort(conn.p.item.total_item_by_id(b, id[i]));
+            m.writer().writeShort(materialId);
+            m.writer().writeShort(conn.p.item.total_item_by_id(b, materialId));
             m.writer().writeByte(1);
             m.writer().writeByte(0);
             conn.addmsg(m);

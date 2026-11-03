@@ -207,13 +207,9 @@ public class MessageHandler {
                     return;
                 }
                 if (conn.p.time_speed_rebuild > System.currentTimeMillis()) {
-                    if (++conn.p.enough_time_disconnect > 2) {
-                        conn.close();
-                    }
                     return;
                 }
                 conn.p.time_speed_rebuild = System.currentTimeMillis() + 500L;
-                conn.p.enough_time_disconnect = 0;
                 UseItem.ProcessItem3(conn, m);
                 break;
             }
@@ -222,13 +218,9 @@ public class MessageHandler {
                     return;
                 }
                 if (conn.p.time_speed_rebuild > System.currentTimeMillis()) {
-                    if (++conn.p.enough_time_disconnect > 2) {
-                        conn.close();
-                    }
                     return;
                 }
                 conn.p.time_speed_rebuild = System.currentTimeMillis() + 500L;
-                conn.p.enough_time_disconnect = 0;
                 UseItem.ProcessItem7(conn, m);
                 break;
             }
@@ -237,13 +229,9 @@ public class MessageHandler {
                     return;
                 }
                 if (conn.p.time_speed_rebuild > System.currentTimeMillis()) {
-                    if (++conn.p.enough_time_disconnect > 2) {
-                        conn.close();
-                    }
                     return;
                 }
                 conn.p.time_speed_rebuild = System.currentTimeMillis() + 500L;
-                conn.p.enough_time_disconnect = 0;
                 UseItem.ProcessItem4(conn, m);
                 break;
             }
