@@ -21,13 +21,16 @@ namespace HSO.Security
             if (manifest == null) throw new ArgumentNullException(nameof(manifest));
             manifest.Validate();
 
-            using var challenge = new MemoryStream(challengePayload, false);
-            int operation = challenge.ReadByte();
-            if (operation != 0) throw new InvalidDataException("Invalid server attestation operation.");
-
-            int protocol = ReadInt32BigEndian(challenge);
-            string nonce = ReadUtf(challenge, 128);
-            ReadInt64BigEndian(challenge);
+            int protocol;
+            string nonce;
+            using (var challenge = new MemoryStream(challengePayload, false))
+            {
+                int operation = challenge.ReadByte();
+                if (operation != 0) throw new InvalidDataException("Invalid server attestation operation.");
+                protocol = ReadInt32BigEndian(challenge);
+                nonce = ReadUtf(challenge, 128);
+                ReadInt64BigEndian(challenge);
+            }
 
             string platform = Application.platform.ToString();
             string packageName = Application.identifier;
@@ -41,16 +44,18 @@ namespace HSO.Security
             using (var hmac = new HMACSHA256(key))
                 signature = hmac.ComputeHash(Encoding.UTF8.GetBytes(canonical));
 
-            using var response = new MemoryStream(512);
-            response.WriteByte(1);
-            WriteInt32BigEndian(response, protocol);
-            WriteUtf(response, manifest.BuildId);
-            WriteUtf(response, platform);
-            WriteUtf(response, packageName);
-            WriteUtf(response, manifest.ManifestHash);
-            WriteInt64BigEndian(response, timestamp);
-            WriteUtf(response, ToLowerHex(signature));
-            return response.ToArray();
+            using (var response = new MemoryStream(512))
+            {
+                response.WriteByte(1);
+                WriteInt32BigEndian(response, protocol);
+                WriteUtf(response, manifest.BuildId);
+                WriteUtf(response, platform);
+                WriteUtf(response, packageName);
+                WriteUtf(response, manifest.ManifestHash);
+                WriteInt64BigEndian(response, timestamp);
+                WriteUtf(response, ToLowerHex(signature));
+                return response.ToArray();
+            }
         }
 
         private static int ReadInt32BigEndian(Stream stream)
@@ -85,6 +90,9 @@ namespace HSO.Security
 
         private static void WriteUtf(Stream stream, string value)
         {
+            foreach (char character in value ?? string.Empty)
+                if (character < 0x21 || character > 0x7E)
+                    throw new InvalidDataException("Attestation text fields must contain ASCII characters only.");
             byte[] bytes = Encoding.UTF8.GetBytes(value ?? string.Empty);
             if (bytes.Length > ushort.MaxValue) throw new InvalidDataException("UTF field is too large.");
             stream.WriteByte((byte)(bytes.Length >> 8));
