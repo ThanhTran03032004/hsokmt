@@ -88,6 +88,7 @@ public class Player extends Body {
     public int hp_restore;
     public long time_buff_hp;
     public long time_buff_mp;
+    public long time_buff_white_horse_mp;
     public long time_affect_special_sk;
     public long time_speed_rebuild;
     public String name_trade;

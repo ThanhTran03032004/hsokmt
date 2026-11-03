@@ -848,6 +848,16 @@ public class Body extends MainObject {
             }
 
             EffTemplate eff_tan_phe = p.getEffTinhTu(EffTemplate.TAN_PHE);
+            if (p.type_use_horse == Horse.NGUA_TRANG
+                    && p.time_buff_white_horse_mp < now
+                    && eff_tan_phe == null) {
+                p.time_buff_white_horse_mp = now + 10_000L;
+                int maxMp = p.body.get_MpMax();
+                if (p.mp < maxMp) {
+                    Service.usepotion(p, 1, maxMp * 20L / 100L);
+                }
+            }
+
             par = 0;
             if (get_pet_follow() != null) {
                 par = get_pet_follow().getParam((byte) 44);
