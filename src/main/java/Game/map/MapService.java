@@ -24,6 +24,8 @@ import Game.event.MobCay;
 import Game.activities.ChienTruong;
 import Game.io.Message;
 import Game.io.Session;
+import Game.security.AntiCheatService;
+import Game.security.ViolationType;
 
 import java.util.List;
 
@@ -275,7 +277,20 @@ public class MapService {
             }
         }
         long _time = System.currentTimeMillis();
-        if (Math.abs(p.x - mx) > (300) || Math.abs(p.y - my) > 300) {
+        int deltaX = Math.abs(p.x - mx);
+        int deltaY = Math.abs(p.y - my);
+        long elapsed = p.time_move <= 0 ? 1_000L : Math.max(50L, Math.min(1_000L, _time - p.time_move));
+        int dynamicLimit = Manager.gI().movementGraceUnits
+                + (int) ((Manager.gI().movementUnitsPerSecond * elapsed) / 1_000L);
+        boolean hardLimitExceeded = deltaX > 300 || deltaY > 300;
+        boolean speedLimitExceeded = Manager.gI().antiCheatEnabled && p.time_move > 0
+                && (deltaX > dynamicLimit || deltaY > dynamicLimit);
+        if (hardLimitExceeded || speedLimitExceeded) {
+            if (Manager.gI().antiCheatEnabled) {
+                AntiCheatService.gI().record(p.conn, ViolationType.MOVEMENT_SPEED, 2,
+                        "map=" + map.map_id + ",dx=" + deltaX + ",dy=" + deltaY
+                                + ",elapsed=" + elapsed + ",limit=" + dynamicLimit);
+            }
             Message m = new Message(4);
             m.writer().writeByte(0);
             m.writer().writeShort(0);
@@ -1639,10 +1654,17 @@ public class MapService {
         try {
             long time_ = System.currentTimeMillis();
             byte index_skill = m.reader().readByte();
-            int n = m.reader().readByte();
+            int n = Byte.toUnsignedInt(m.reader().readByte());
             int ObjAtk = 0;
             short n3 = 0;
 
+            if (index_skill < 0 || index_skill >= conn.p.skill_point.length
+                    || index_skill >= conn.p.skills.length || index_skill >= conn.p.time_delay_skill.length
+                    || conn.p.skills[index_skill] == null) {
+                AntiCheatService.gI().record(conn, ViolationType.INVALID_SKILL, 8,
+                        "index=" + index_skill);
+                return;
+            }
             int sk_point1 = conn.p.skill_point[index_skill];
             if (sk_point1 < 1) {
                 return;
@@ -1674,6 +1696,10 @@ public class MapService {
                 return;
             }
             if (conn.p.time_delay_skill[index_skill] > time_) {
+                if (Manager.gI().antiCheatEnabled) {
+                    AntiCheatService.gI().record(conn, ViolationType.SKILL_COOLDOWN, 2,
+                            "skill=" + index_skill + ",remaining=" + (conn.p.time_delay_skill[index_skill] - time_));
+                }
                 if (++conn.p.enough_time_disconnect > 5) {
                     conn.close();
                 }
@@ -1681,6 +1707,10 @@ public class MapService {
             }
             // bắt đầu tính dame
             conn.p.mp -= _skill.mpLost;
+            if (n > Byte.toUnsignedInt(_skill.nTarget) && Manager.gI().antiCheatEnabled) {
+                AntiCheatService.gI().record(conn, ViolationType.INVALID_TARGET_COUNT, 2,
+                        "skill=" + index_skill + ",requested=" + n + ",allowed=" + _skill.nTarget);
+            }
             n = (_skill.nTarget < n) ? _skill.nTarget : n;
             conn.p.time_delay_skill[index_skill] = (long) (time_ + _skill.delay * 0.97);
             conn.p.enough_time_disconnect = 0;

@@ -30,6 +30,10 @@ import Game.map.Map;
 import Game.template.EffTemplate;
 import Game.template.Horse;
 import Game.template.Mob_MoTaiNguyen;
+import Game.security.AntiCheatService;
+import Game.security.ClientAttestationService;
+import Game.security.SessionState;
+import Game.security.ViolationType;
 
 public class MessageHandler {
 
@@ -42,6 +46,10 @@ public class MessageHandler {
     public void process_msg(Message m) throws IOException {
 //        System.out.println("CMD " + m.cmd);
         switch (m.cmd) {
+            case ClientAttestationService.COMMAND: {
+                ClientAttestationService.processResponse(conn, m);
+                break;
+            }
             case -100: {
                 if (conn.p.isdie) {
                     return;
@@ -534,6 +542,11 @@ public class MessageHandler {
             }
             case 13: {
                 try {
+                    if (conn.getSessionState() != SessionState.ACCOUNT_AUTHENTICATED) {
+                        AntiCheatService.gI().record(conn, ViolationType.INVALID_SESSION_STATE, 5,
+                                "character login in state=" + conn.getSessionState());
+                        return;
+                    }
                     if (System.currentTimeMillis() - conn.timeStartLogin > 5000) {
                         conn.close();
                     } else {
@@ -548,6 +561,11 @@ public class MessageHandler {
                 break;
             }
             case 14: {
+                if (conn.getSessionState() != SessionState.ACCOUNT_AUTHENTICATED) {
+                    AntiCheatService.gI().record(conn, ViolationType.INVALID_SESSION_STATE, 5,
+                            "character creation in state=" + conn.getSessionState());
+                    return;
+                }
                 conn.char_create(m);
                 break;
             }
@@ -598,6 +616,13 @@ public class MessageHandler {
             if (conn.p == null) {
                 m.reader().readByte(); // type login
                 int id_player_login = m.reader().readInt();
+                if (!conn.ownsCharacterId(id_player_login)) {
+                    AntiCheatService.gI().record(conn, ViolationType.CHARACTER_OWNERSHIP, 20,
+                            "requestedCharacterId=" + id_player_login);
+                    conn.sendLoginNotice("Nhan vat khong thuoc tai khoan nay.");
+                    conn.close();
+                    return;
+                }
                 Player p0 = new Player(conn, id_player_login);
 
                 if (p0 != null && p0.setup()) {
@@ -628,6 +653,7 @@ public class MessageHandler {
                         }
                     }
                     conn.p = p0;
+                    conn.setSessionState(SessionState.IN_GAME);
                     conn.p.set_in4();
                     conn.SaveIP();
                     MessageHandler.dataloginmap(conn);

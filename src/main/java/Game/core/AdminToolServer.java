@@ -75,6 +75,7 @@ public class AdminToolServer {
             server.createContext("/api/item/search", exchange -> handleApi(exchange, this::searchItem));
             server.createContext("/api/broadcast", exchange -> handleApi(exchange, this::broadcast));
             server.createContext("/api/settings", exchange -> handleApi(exchange, this::settings));
+            server.createContext("/api/anticheat/settings", exchange -> handleApi(exchange, this::antiCheatSettings));
             server.createContext("/api/maintenance/schedule", exchange -> handleApi(exchange, this::scheduleMaintenance));
             server.setExecutor(Executors.newCachedThreadPool());
             server.start();
@@ -191,6 +192,19 @@ public class AdminToolServer {
         result.put("event", Manager.gI().event);
         result.put("maintenanceStartsAt", maintenanceStartsAt);
         result.put("maintenanceEndsAt", maintenanceEndsAt);
+        result.put("antiCheatEnabled", Manager.gI().antiCheatEnabled);
+        result.put("unityOnly", Manager.gI().unityOnly);
+        result.put("unityProtocol", Manager.gI().unityProtocol);
+        result.put("unityBuilds", new ArrayList<>(Manager.gI().unityBuildSecrets.keySet()));
+        long attestedSessions;
+        long suspiciousSessions;
+        synchronized (Session.client_entry) {
+            attestedSessions = Session.client_entry.stream().filter(session -> session != null && session.unityAttested).count();
+            suspiciousSessions = Session.client_entry.stream()
+                    .filter(session -> session != null && session.getAntiCheatScore() > 0).count();
+        }
+        result.put("unityAttestedSessions", attestedSessions);
+        result.put("suspiciousSessions", suspiciousSessions);
         return result;
     }
 
@@ -599,6 +613,24 @@ public class AdminToolServer {
         return result;
     }
 
+    private Map<String, Object> antiCheatSettings(HttpExchange exchange, Map<String, Object> body) throws IOException {
+        requirePost(exchange);
+        boolean enabled = boolValue(body, "enabled", Manager.gI().antiCheatEnabled);
+        boolean unityOnly = boolValue(body, "unityOnly", Manager.gI().unityOnly);
+        if (unityOnly && Manager.gI().unityBuildSecrets.isEmpty()) {
+            throw new IllegalArgumentException("configure at least one Unity build key before enabling Unity-only");
+        }
+        Manager.gI().antiCheatEnabled = enabled;
+        Manager.gI().unityOnly = unityOnly;
+        updateConfigValue("anticheat-enabled", String.valueOf(enabled));
+        updateConfigValue("unity-only", String.valueOf(unityOnly));
+        Map<String, Object> result = ok();
+        result.put("antiCheatEnabled", enabled);
+        result.put("unityOnly", unityOnly);
+        result.put("unityBuilds", new ArrayList<>(Manager.gI().unityBuildSecrets.keySet()));
+        return result;
+    }
+
     private Map<String, Object> scheduleMaintenance(HttpExchange exchange, Map<String, Object> body) {
         requirePost(exchange);
         int delayMinutes = intValue(body, "delayMinutes", 5);
@@ -915,6 +947,13 @@ public class AdminToolServer {
                             <button onclick="saveSettings()">Luu cau hinh</button>
                         </section>
                         <section class="card">
+                            <h3>Anti-cheat / Unity</h3>
+                            <label class="checkrow"><input id="ac_enabled" type="checkbox" checked> Bat anti-cheat server</label>
+                            <label class="checkrow"><input id="ac_unity_only" type="checkbox"> Chi cho Unity da xac thuc</label>
+                            <div id="ac_builds" class="stat">Chua load build.</div>
+                            <button class="danger" onclick="saveAntiCheat()">Luu anti-cheat</button>
+                        </section>
+                        <section class="card">
                             <h3>Giftcode</h3>
                             <label>Code</label><input id="gc_code" placeholder="tanthu2026">
                             <div class="row"><div><label>Limit</label><input id="gc_limit" value="1"></div><div><label>Empty box</label><input id="gc_empty" value="0"></div></div>
@@ -994,11 +1033,14 @@ public class AdminToolServer {
                             if(print) document.getElementById('out').textContent = `HTTP ${res.status}\\n` + JSON.stringify(j, null, 2);
                             if(j.ok) {
                                 document.getElementById('stats').innerHTML =
-                                    `Sessions: ${j.sessions}<br>Online real: ${j.onlinePlayers}<br>Bot players: ${j.fakeBots}<br>Shown online: ${j.shownOnline}<br>Bot auto: ${j.botAutoDistribute}<br>Farm/Cho/VIP/Boss: ${j.botFarmers}/${j.botSellers}/${j.botVip}/${j.botBossHunters}<br>Bot fallback map/zone: ${j.botMapId}/${j.botZoneId} (${j.botX},${j.botY})<br>Maintenance: ${j.maintenance}<br>Debug: ${j.debug}<br>EXP / Level max / Event: ${j.expMultiplier} / ${j.maxLevel} / ${j.event}<br>Login limit/IP: ${j.loginLimitPerIp}`;
+                                    `Sessions: ${j.sessions}<br>Online real: ${j.onlinePlayers}<br>Unity verified: ${j.unityAttestedSessions}<br>Sessions co diem vi pham: ${j.suspiciousSessions}<br>Unity-only: ${j.unityOnly}<br>Bot players: ${j.fakeBots}<br>Shown online: ${j.shownOnline}<br>Bot auto: ${j.botAutoDistribute}<br>Farm/Cho/VIP/Boss: ${j.botFarmers}/${j.botSellers}/${j.botVip}/${j.botBossHunters}<br>Bot fallback map/zone: ${j.botMapId}/${j.botZoneId} (${j.botX},${j.botY})<br>Maintenance: ${j.maintenance}<br>Debug: ${j.debug}<br>EXP / Level max / Event: ${j.expMultiplier} / ${j.maxLevel} / ${j.event}<br>Login limit/IP: ${j.loginLimitPerIp}`;
                                 document.getElementById('setting_exp').value=j.expMultiplier;
                                 document.getElementById('setting_level').value=j.maxLevel;
                                 document.getElementById('setting_event').value=j.event;
                                 document.getElementById('setting_login').value=j.loginLimitPerIp;
+                                document.getElementById('ac_enabled').checked=!!j.antiCheatEnabled;
+                                document.getElementById('ac_unity_only').checked=!!j.unityOnly;
+                                document.getElementById('ac_builds').textContent='Protocol '+j.unityProtocol+' | Builds: '+((j.unityBuilds||[]).join(', ')||'chua cau hinh');
                             } else {
                                 document.getElementById('stats').innerHTML = 'Token sai hoac API loi: ' + (j.error || res.status);
                             }
@@ -1023,6 +1065,7 @@ public class AdminToolServer {
                     function broadcastMessage(){ api('/api/broadcast',{message:v('broadcast_message')}); }
                     function maintenanceSchedule(){ api('/api/maintenance/schedule',{delayMinutes:n('mt_delay'),durationMinutes:n('mt_duration'),message:v('mt_message'),kick:document.getElementById('mt_kick').checked}); }
                     function saveSettings(){ api('/api/settings',{exp:n('setting_exp'),maxLevel:n('setting_level'),event:n('setting_event'),loginLimit:n('setting_login')}); }
+                    function saveAntiCheat(){ api('/api/anticheat/settings',{enabled:document.getElementById('ac_enabled').checked,unityOnly:document.getElementById('ac_unity_only').checked}); }
                     function esc(x){ return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
                     function renderTable(rows,cols){ if(!rows||!rows.length)return 'Khong tim thay.'; return '<table><thead><tr>'+cols.map(c=>'<th>'+esc(c)+'</th>').join('')+'</tr></thead><tbody>'+rows.map(r=>'<tr>'+cols.map(c=>'<td>'+esc(r[c])+'</td>').join('')+'</tr>').join('')+'</tbody></table>'; }
                     function v(id){ return document.getElementById(id).value; }

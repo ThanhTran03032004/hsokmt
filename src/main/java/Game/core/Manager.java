@@ -16,7 +16,9 @@ import java.io.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import Game.activities.KingCupManager;
 import Game.activities.Lottery;
@@ -77,6 +79,15 @@ public class Manager {
     public String admin_tool_bind;
     public int admin_tool_port;
     public String admin_tool_token;
+    public boolean antiCheatEnabled;
+    public boolean unityOnly;
+    public int unityProtocol;
+    public int maxInboundPacketSize;
+    public int packetRatePerSecond;
+    public int movementUnitsPerSecond;
+    public int movementGraceUnits;
+    public final HashMap<String, String> unityBuildSecrets = new HashMap<>();
+    public final Set<String> unityPackages = new HashSet<>();
     public int time_login;
     public List<ItemSell3[]> itemSellTB;
     public short[] itemPoitionSell;
@@ -1194,6 +1205,41 @@ public class Manager {
         this.admin_tool_bind = configMap.getOrDefault("admin_tool_bind", "127.0.0.1");
         this.admin_tool_port = Integer.parseInt(configMap.getOrDefault("admin_tool_port", "19130"));
         this.admin_tool_token = configMap.getOrDefault("admin_tool_token", "admin123");
+        this.antiCheatEnabled = Boolean.parseBoolean(configMap.getOrDefault("anticheat-enabled", "true"));
+        this.unityOnly = Boolean.parseBoolean(configMap.getOrDefault("unity-only", "false"));
+        this.unityProtocol = Integer.parseInt(configMap.getOrDefault("unity-protocol", "2"));
+        this.maxInboundPacketSize = Math.max(1024,
+                Math.min(65535, Integer.parseInt(configMap.getOrDefault("max-inbound-packet-size", "32768"))));
+        this.packetRatePerSecond = Math.max(30,
+                Integer.parseInt(configMap.getOrDefault("packet-rate-per-second", "120")));
+        this.movementUnitsPerSecond = Math.max(100,
+                Integer.parseInt(configMap.getOrDefault("movement-units-per-second", "600")));
+        this.movementGraceUnits = Math.max(20,
+                Integer.parseInt(configMap.getOrDefault("movement-grace-units", "80")));
+
+        this.unityPackages.clear();
+        for (String packageName : configMap.getOrDefault("unity-packages", "com.hso.kmt").split(",")) {
+            if (!packageName.isBlank()) {
+                this.unityPackages.add(packageName.trim());
+            }
+        }
+        this.unityBuildSecrets.clear();
+        String configuredBuilds = configMap.getOrDefault("unity-build-secrets", "");
+        for (String entry : configuredBuilds.split(",")) {
+            String[] pair = entry.trim().split("=", 2);
+            if (pair.length == 2 && !pair[0].isBlank() && !pair[1].isBlank()) {
+                this.unityBuildSecrets.put(pair[0].trim(), pair[1].trim());
+            }
+        }
+        String environmentBuildId = System.getenv("HSO_UNITY_BUILD_ID");
+        String environmentBuildSecret = System.getenv("HSO_UNITY_BUILD_SECRET");
+        if (environmentBuildId != null && !environmentBuildId.isBlank()
+                && environmentBuildSecret != null && !environmentBuildSecret.isBlank()) {
+            this.unityBuildSecrets.put(environmentBuildId.trim(), environmentBuildSecret.trim());
+        }
+        if (this.unityOnly && this.unityBuildSecrets.isEmpty()) {
+            System.err.println("UNITY-ONLY is enabled but no Unity build secret is configured.");
+        }
         if (configMap.containsKey("time_login")) {
             this.time_login = Integer.parseInt(configMap.get("time_login"));
         } else {

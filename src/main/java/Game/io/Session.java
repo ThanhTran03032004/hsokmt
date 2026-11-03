@@ -35,9 +35,14 @@ import Game.core.SQL;
 import Game.core.SaveData;
 import Game.core.SessionManager;
 
-import java.util.Random;
+import java.security.SecureRandom;
 
 import Game.map.Map;
+import Game.security.AntiCheatService;
+import Game.security.ClientAttestationService;
+import Game.security.PacketRateLimiter;
+import Game.security.SessionState;
+import Game.security.ViolationType;
 import Game.template.Part_player;
 
 public class Session implements Runnable {
@@ -73,10 +78,19 @@ public class Session implements Runnable {
     public long timeStartLogin;
     public byte typeLanguage;
     public VietNam language;
+    public volatile byte[] attestationNonce;
+    public volatile long attestationIssuedAt;
+    public volatile boolean unityAttested;
+    public volatile String clientBuildId = "";
+    public volatile String clientPlatform = "";
+    public volatile String clientPackageName = "";
+    private volatile SessionState sessionState = SessionState.CONNECTED;
+    private final PacketRateLimiter packetRateLimiter = new PacketRateLimiter();
+    private int antiCheatScore;
 
     public Session(Socket socket) {
         timeConnect = System.currentTimeMillis();
-        Random random = new Random();
+        SecureRandom random = new SecureRandom();
         random.nextBytes(keys);
         this.socket = socket;
         this.list_msg = new LinkedBlockingQueue<>();
@@ -147,6 +161,7 @@ public class Session implements Runnable {
     }
 
     public void disconnect() {
+        this.sessionState = SessionState.CLOSED;
         if (isLogin) {
             Manager.gI().time_login_client.put(this.user, (System.currentTimeMillis() + Manager.gI().time_login));
         }
@@ -213,6 +228,32 @@ public class Session implements Runnable {
         try {
             while (connected) {
                 Message m = read_msg();
+                if (Manager.gI().antiCheatEnabled
+                        && !packetRateLimiter.allow(m.cmd, this.p != null, Manager.gI().packetRatePerSecond)) {
+                    int score = AntiCheatService.gI().record(this, ViolationType.PACKET_RATE, 3,
+                            "command=" + m.cmd);
+                    m.cleanup();
+                    if (score >= 15) {
+                        close();
+                        break;
+                    }
+                    continue;
+                }
+                if (Manager.gI().unityOnly && sendKeyComplete && !unityAttested
+                        && m.cmd != ClientAttestationService.COMMAND
+                        && !(this.ip.equals("127.0.0.1") && m.cmd == -1)) {
+                    int score = AntiCheatService.gI().record(this, ViolationType.CLIENT_ATTESTATION, 2,
+                            "command before Unity attestation=" + m.cmd);
+                    if (m.cmd == 1) {
+                        sendLoginNotice("Server chi ho tro phien ban Unity moi nhat.");
+                    }
+                    m.cleanup();
+                    if (score >= 6) {
+                        close();
+                        break;
+                    }
+                    continue;
+                }
                 if (this.ip.equals("127.0.0.1") && m.cmd == -1) {
                     ServerManager.gI().close();
                     System.out.println("Close server is processing....");
@@ -231,14 +272,18 @@ public class Session implements Runnable {
                             Manager.gI().close();
                         }
                     }).start();
-                } else if (m.cmd == -40) {
+                } else if (m.cmd == -40 && sessionState == SessionState.CONNECTED) {
                     sendkeys();
-                } else if (sendKeyComplete && (this.p != null || m.cmd == 61 || m.cmd == 1 || m.cmd == 14 || m.cmd == 13)) {
+                } else if (sendKeyComplete && (this.p != null || m.cmd == ClientAttestationService.COMMAND
+                        || m.cmd == 61 || m.cmd == 1 || m.cmd == 14 || m.cmd == 13)) {
                     try {
                         controller.process_msg(m);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                } else if (Manager.gI().antiCheatEnabled) {
+                    AntiCheatService.gI().record(this, ViolationType.INVALID_SESSION_STATE, 2,
+                            "command=" + m.cmd + ",state=" + sessionState);
                 }
                 m.cleanup();
             }
@@ -323,15 +368,15 @@ public class Session implements Runnable {
         } else {
             size = dis.readShort();
         }
-        byte data[] = new byte[size];
-        int len = 0;
-        int byteRead = 0;
-        while (len != -1 && byteRead < size) {
-            len = dis.read(data, byteRead, size - byteRead);
-            if (len > 0) {
-                byteRead += len;
+        if (size < 0 || size > Manager.gI().maxInboundPacketSize) {
+            if (Manager.gI().antiCheatEnabled) {
+                AntiCheatService.gI().record(this, ViolationType.INVALID_PACKET, 10,
+                        "command=" + cmd + ",size=" + size);
             }
+            throw new IOException("Invalid inbound packet size: " + size);
         }
+        byte data[] = new byte[size];
+        dis.readFully(data);
         if (sendKeyComplete) {
             for (int i = 0; i < data.length; i++) {
                 data[i] = readKey(data[i]);
@@ -372,9 +417,22 @@ public class Session implements Runnable {
         send_msg(m);
         m.cleanup();
         sendKeyComplete = true;
+        sessionState = SessionState.KEY_EXCHANGED;
     }
 
     public void getclientin4(Message m) throws IOException {
+        if (Manager.gI().unityOnly && !unityAttested) {
+            AntiCheatService.gI().record(this, ViolationType.CLIENT_ATTESTATION, 10,
+                    "legacy login rejected");
+            sendLoginNotice("Server chi ho tro phien ban Unity moi nhat.");
+            close();
+            return;
+        }
+        if (sessionState != SessionState.KEY_EXCHANGED && sessionState != SessionState.ATTESTED) {
+            AntiCheatService.gI().record(this, ViolationType.INVALID_SESSION_STATE, 5,
+                    "login in state=" + sessionState);
+            return;
+        }
         if (!CheckDDOS.checkCountIP(ip)) {
             noticelogin("Bạn đã đăng nhập quá giới hạn tài khoản trên cùng 1 mạng");
             return;
@@ -455,8 +513,11 @@ public class Session implements Runnable {
             }
         } else {
             //
-            String query = "SELECT * FROM `account` WHERE `user` = '" + user + "' AND `pass` = '" + pass + "' LIMIT 1;";
-            try (Connection conn = SQL.gI().getConnection(); Statement ps = conn.createStatement(); ResultSet rs = ps.executeQuery(query)) {
+            String query = "SELECT * FROM `account` WHERE `user` = ? AND `pass` = ? LIMIT 1";
+            try (Connection conn = SQL.gI().getConnection(); PreparedStatement ps = conn.prepareStatement(query)) {
+                ps.setString(1, user);
+                ps.setString(2, pass);
+                try (ResultSet rs = ps.executeQuery()) {
                 if (!rs.next()) {
                     noticelogin("Thông tin đăng nhập không chính xác");
                     return;
@@ -489,7 +550,8 @@ public class Session implements Runnable {
                 for (int i = 0; i < jsar.size(); i++) {
                     this.list_char[i] = jsar.get(i).toString();
                 }
-                jsar.clear();
+                    jsar.clear();
+                }
             } catch (SQLException e) {
                 e.printStackTrace();
                 noticelogin("Có lỗi xảy ra, hãy thử lại!");
@@ -522,6 +584,7 @@ public class Session implements Runnable {
         }
         this.timeStartLogin = System.currentTimeMillis();
         this.get_in4 = true;
+        this.sessionState = SessionState.ACCOUNT_AUTHENTICATED;
     }
 
     public void send_char_part() {
@@ -572,6 +635,51 @@ public class Session implements Runnable {
         m.writer().writeByte(0);
         addmsg(m);
         m.cleanup();
+    }
+
+    public void sendLoginNotice(String message) throws IOException {
+        noticelogin(message);
+    }
+
+    public boolean ownsCharacterId(int characterId) {
+        if (list_char == null || characterId <= 0) {
+            return false;
+        }
+        String query = "SELECT `name` FROM `player` WHERE `id` = ? LIMIT 1";
+        try (Connection connection = SQL.gI().getConnection(); PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, characterId);
+            try (ResultSet result = statement.executeQuery()) {
+                if (!result.next()) {
+                    return false;
+                }
+                String characterName = result.getString("name");
+                for (String ownedName : list_char) {
+                    if (ownedName != null && ownedName.equals(characterName)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public SessionState getSessionState() {
+        return sessionState;
+    }
+
+    public void setSessionState(SessionState state) {
+        this.sessionState = state;
+    }
+
+    public synchronized int addAntiCheatScore(int score) {
+        antiCheatScore += score;
+        return antiCheatScore;
+    }
+
+    public synchronized int getAntiCheatScore() {
+        return antiCheatScore;
     }
 
     public void send_listchar_board() throws IOException {
