@@ -87,6 +87,7 @@ public class Session implements Runnable {
     private volatile SessionState sessionState = SessionState.CONNECTED;
     private final PacketRateLimiter packetRateLimiter = new PacketRateLimiter();
     private int antiCheatScore;
+    private long lastPacketRateViolationAt;
 
     public Session(Socket socket) {
         timeConnect = System.currentTimeMillis();
@@ -230,8 +231,13 @@ public class Session implements Runnable {
                 Message m = read_msg();
                 if (Manager.gI().antiCheatEnabled
                         && !packetRateLimiter.allow(m.cmd, this.p != null, Manager.gI().packetRatePerSecond)) {
-                    int score = AntiCheatService.gI().record(this, ViolationType.PACKET_RATE, 3,
-                            "command=" + m.cmd);
+                    long now = System.currentTimeMillis();
+                    int score = getAntiCheatScore();
+                    if (now - lastPacketRateViolationAt >= 1_000L) {
+                        lastPacketRateViolationAt = now;
+                        score = AntiCheatService.gI().record(this, ViolationType.PACKET_RATE, 3,
+                                "command=" + m.cmd);
+                    }
                     m.cleanup();
                     if (score >= 15) {
                         close();
