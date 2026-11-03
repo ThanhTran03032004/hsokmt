@@ -62,6 +62,21 @@ public class UseItem {
 
     private static void use_item4_default(Session conn, short id_potion) throws IOException {
         switch (id_potion) {
+            case 214: {
+                if (conn.p.get_EffDefault(StrucEff.BUTTERFLY_LANTERN) != null) {
+                    Service.send_notice_box(conn, "Bạn đã trang bị Lồng đèn bươm bướm vĩnh viễn.");
+                    return;
+                }
+                conn.p.item.remove(4, id_potion, 1);
+                conn.p.body.add_EffDefault(
+                        StrucEff.BUTTERFLY_LANTERN,
+                        1,
+                        StrucEff.PERMANENT_EFFECT_END);
+                Service.send_char_main_in4(conn.p);
+                Service.send_notice_box(conn,
+                        "Đã trang bị Lồng đèn bươm bướm vĩnh viễn: +25% EXP, +10% HP và +10% phòng thủ.");
+                break;
+            }
             case 57:
             case 58:
             case 59:

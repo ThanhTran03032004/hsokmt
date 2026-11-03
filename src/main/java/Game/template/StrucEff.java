@@ -3,6 +3,8 @@ package Game.template;
 
 
 public class StrucEff {
+    public static final short BUTTERFLY_LANTERN = -200;
+    public static final long PERMANENT_EFFECT_END = Long.MAX_VALUE / 4;
     public static final short PowerWing = -120;
     public static final short BuffSTVL = 7;
     public static final short BuffSTBang = 8;

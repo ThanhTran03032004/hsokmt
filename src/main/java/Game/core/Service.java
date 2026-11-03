@@ -140,10 +140,29 @@ public class Service {
         //
         byte[] i1 = new byte[]{0, 1, 2, 3, 4, 53, 54, 55, 7, 8, 9, 10, 11, 14, 15, 16, 17, 18, 19, 20, 27, 28, 33, 34,
                 35, 36, 40, 112, -75, -74, -73};
-        m.writer().writeByte(i1.length);
-        for (int i = 0; i < i1.length; i++) {
-            m.writer().writeByte(i1[i]);
-            m.writer().writeInt(p.body.get_param_view_in4(i1[i]));
+        List<Byte> infoOptionIds = new ArrayList<>();
+        for (byte optionId : i1) {
+            infoOptionIds.add(optionId);
+        }
+        if (p.get_EffDefault(StrucEff.BUTTERFLY_LANTERN) != null) {
+            infoOptionIds.add((byte) 51);
+        }
+        if (p.item != null && p.item.wear != null) {
+            for (Item3 item : p.item.wear) {
+                if (item == null || item.type < 21 || item.type > 28 || item.op == null) {
+                    continue;
+                }
+                for (Option option : item.op) {
+                    if (option != null && !infoOptionIds.contains(option.id)) {
+                        infoOptionIds.add(option.id);
+                    }
+                }
+            }
+        }
+        m.writer().writeByte(infoOptionIds.size());
+        for (byte optionId : infoOptionIds) {
+            m.writer().writeByte(optionId);
+            m.writer().writeInt(p.body.get_param_view_in4(optionId));
         }
         ///
         m.writer().writeShort(p.level); // lv

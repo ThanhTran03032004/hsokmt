@@ -120,12 +120,19 @@ public class Body extends MainObject {
                     }
                 }
             }
+            if (p.get_EffDefault(StrucEff.BUTTERFLY_LANTERN) != null) {
+                if (id == 51) {
+                    param += 2500;
+                } else if (id == 27 || id == 15) {
+                    param += 1000;
+                }
+            }
             return param;
         }
     }
 
     public int getPercentExpUp() {
-        int percent = 0;
+        int percent = total_item_param(51) / 100;
         EffTemplate ef = p.get_EffDefault(-125);
         if (ef != null) {
             percent += 50;
